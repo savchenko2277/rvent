@@ -1,0 +1,429 @@
+@use 'lib' as *;
+
+.header {
+	$self: &;
+
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+	color: $lightText;
+
+	&_open {
+		#{$self}__menu {
+			opacity: 1;
+			visibility: visible;
+			pointer-events: all;
+		}
+
+		#{$self}__burger {
+
+			&::before,
+			&::after {
+				top: 50%;
+				left: 0; // Устанавливаем привязку к левому краю
+				bottom: auto;
+				transform: translateY(-50%); // Центрируем только по вертикали
+				width: 24px;
+			}
+
+			&::after {
+				transform: translateY(-50%) rotate(-45deg); // Добавляем поворот к существующему трансформу
+			}
+
+			&::before {
+				transform: translateY(-50%) rotate(45deg); // Добавляем поворот к существующему трансформу
+			}
+		}
+	}
+
+	&__top {
+		position: relative;
+		z-index: 2;
+	}
+
+	&__top-container {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 20px 0;
+		height: 106px;
+		position: relative;
+
+		@include media("<=xs") {
+			height: 52px;
+		}
+	}
+
+	&__burger {
+		width: 38px;
+		height: 12px;
+		position: relative;
+		cursor: pointer;
+
+		&::after,
+		&::before {
+			content: '';
+			width: 100%;
+			background: $lightText;
+			height: 2px;
+			transition: all $transition;
+		}
+
+		&::before {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+
+		&::after {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+		}
+	}
+
+	&__logo {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		img {
+			height: 67px;
+			object-fit: contain;
+
+			&:nth-child(1) {
+				display: block;
+			}
+
+			&:nth-child(2) {
+				display: none;
+			}
+
+		}
+
+		;
+
+		@include media("<=xs") {
+			img {
+				height: 32px;
+			}
+		}
+	}
+
+	&__menu {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: transparent;
+		backdrop-filter: blur(20px);
+		padding-top: 165px;
+		visibility: hidden;
+		pointer-events: none;
+		opacity: 0;
+		transition: $transition;
+		display: flex;
+		flex-direction: column;
+		padding-bottom: 80px;
+
+		@include media("<=xs") {
+			padding-top: 172px;
+			padding-bottom: 40px;
+		}
+	}
+
+	&__menu-container {
+		flex: 1 1 auto;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__navigation {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+
+		/* 1. Инициализируем счетчик в родительском контейнере */
+		counter-reset: menu-counter;
+	}
+
+	&__item {
+		display: grid;
+		grid-template-rows: max-content 0fr;
+		transition: grid-template-rows $transition;
+		counter-increment: menu-counter;
+
+		@mixin item-expanded {
+			grid-template-rows: max-content 1fr;
+
+			#{$self}__item-name {
+				opacity: 1;
+
+				&::after {
+					opacity: 1;
+				}
+
+				&::before {
+					opacity: 0.4;
+				}
+			}
+
+			#{$self}__item-arrow {
+				opacity: 1;
+			}
+		}
+
+		@include media(">lg") {
+			&:hover {
+				@include item-expanded;
+			}
+		}
+
+		@include media("<=lg") {
+			&._active {
+				@include item-expanded;
+			}
+		}
+	}
+
+
+	&__item-top {
+		text-transform: uppercase;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
+		gap: 10px;
+	}
+
+	&__item-content {
+		overflow: hidden;
+		margin-left: auto;
+		text-align: right;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	&__item-list {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	&__item-list-item {
+		font-weight: 500;
+		opacity: 0.3;
+		transition: all $transition;
+		cursor: pointer;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	&__item-name {
+		font-size: 30px;
+		text-transform: uppercase;
+		opacity: 0.4;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 10px;
+		width: 100%;
+		line-height: 80%;
+		transition: all $transition;
+		text-wrap: nowrap;
+		font-family: "STAPEL";
+
+		&::before {
+			content: counter(menu-counter, decimal-leading-zero);
+			font-size: 10px;
+			align-self: start;
+			line-height: 100%;
+			opacity: 1;
+		}
+
+		&::after {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 1px;
+			background: $lightText;
+			opacity: 0;
+			transition: all $transition;
+		}
+
+		@include media("<=xs") {
+			font-size: 20px;
+		}
+	}
+
+	&__item-go {
+		margin-top: 10px;
+		font-weight: 700;
+	}
+
+	&__item-arrow {
+		@include flex-center;
+
+		width: 30px;
+		height: 30px;
+		background: $lightText;
+		border-radius: 50%;
+		opacity: 0;
+		transition: all $transition;
+		flex: 0 0 auto;
+
+		img {
+			width: 10px;
+			height: 10px;
+			object-fit: contain;
+
+			&:nth-child(1) {
+				display: none;
+			}
+
+			&:nth-child(2) {
+				display: block;
+			}
+
+		}
+	}
+
+	&__bottom {
+		margin-top: auto;
+
+		@include media("<=xs") {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			justify-content: space-between;
+			gap: 40px;
+		}
+	}
+
+	&__contacts {
+		display: flex;
+		flex-direction: row;
+		gap: 40px;
+
+		@include media("<=xs") {
+			flex-direction: column;
+			gap: 30px;
+		}
+	}
+
+	&__contacts-column {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	&__contacts-column-title {
+		font-weight: 500;
+		opacity: 0.4;
+	}
+
+	&__contacts-column-list {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+
+		&_socials {
+			flex-direction: row;
+			align-items: center;
+			gap: 5px;
+
+			li:not(:last-child) {
+				&::after {
+					content: '/';
+					margin-left: 5px;
+				}
+			}
+		}
+	}
+
+	&__contacts-column-item {
+		text-transform: uppercase;
+		font-family: "STAPEL";
+		transition: all $transition;
+
+		&:hover {
+			opacity: 0.4;
+		}
+	}
+
+	&__button {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		text-transform: uppercase;
+		gap: 2px;
+		position: relative;
+		font-family: "STAPEL";
+		line-height: 100%;
+		width: fit-content;
+		height: fit-content;
+
+		&_pc {
+			@include media("<=xs") {
+				display: none;
+			}
+		}
+
+		&_mobile {
+			@include media(">xs") {
+				display: none;
+			}
+		}
+
+
+		&:hover {
+			&::after {
+				width: 0%;
+			}
+
+			#{$self}__button-icon {
+				img {
+					transform: rotate(90deg);
+				}
+			}
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: calc(100% + 5px);
+			right: 0;
+			width: 100%;
+			height: 1px;
+			background: $lightText;
+			transition: all $transition;
+		}
+
+		&-icon {
+			img {
+				width: 10px;
+				height: 10px;
+				object-fit: contain;
+				transition: all $transition;
+
+				&:nth-child(1) {
+					display: block;
+				}
+
+				&:nth-child(2) {
+					display: none;
+				}
+
+			}
+		}
+	}
+
+}

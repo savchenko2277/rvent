@@ -1,0 +1,12 @@
+@use 'lib' as *;
+
+.container {
+	$self: &;
+
+	width: min($containerWidth, calc(100% - 34px * 2));
+	margin: 0 auto;
+
+	@include media("<=md") {
+		width: min($containerWidth, calc(100% - 15px * 2));
+	}
+}

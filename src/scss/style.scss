@@ -1,0 +1,56 @@
+@use 'lib' as * with(
+	$breakpoints: (
+		'xxxs': 360px,
+		'xxs': 480px,
+		'xs': 640px,
+		'sm': 780px,
+		'md': 960px,
+		'lg': 1100px,
+		'xlg': 1280px,
+		'xxlg': 1440px,
+		'xxxlg': 1680px,
+		'xxxxlg': 1928px
+	)
+);
+
+@use "../blocks/**/*.scss";
+
+// Подключение шрифтов
+
+@include font-face("Stapel_Regular", "STAPEL", 400);
+@include font-face("Manrope-ExtraBold", "Manrope", 800);
+@include font-face("Manrope-ExtraLight", "Manrope", 200);
+@include font-face("Manrope-Light", "Manrope", 300);
+@include font-face("Manrope-Medium", "Manrope", 500);
+@include font-face("Manrope-Regular", "Manrope", 400);
+@include font-face("Manrope-SemiBold", "Manrope", 600);
+@include font-face("Manrope-Bold", "Manrope", 700);
+
+body, html {
+	background-color: $lightText;
+	font-size: $textSize;
+	color: $darkText;
+	font-family: "Manrope";
+	line-height: 1.2;
+	font-weight: 400;
+	display: flex;
+	flex-flow: column nowrap;
+	min-height: 100vh;
+}
+
+body.scroll-lock {
+	overflow: hidden;
+	padding-right: var(--sw);
+}
+
+.footer {
+	flex: 0 0 auto; 
+	margin-top: auto; 
+}
+
+.sprite {
+	display: none;
+}
+
+em { font-style: italic; }
+strong { font-weight: bold; }
