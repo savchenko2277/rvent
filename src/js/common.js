@@ -38,8 +38,46 @@ const setHeader = () => {
 	});
 }
 
+const initFileLoaders = () => {
+    const wrappers = document.querySelectorAll('.js-file-wrapper');
+
+    wrappers.forEach(wrapper => {
+        const input = wrapper.querySelector('.js-file-input');
+        const fileName = wrapper.querySelector('.js-file-name');
+        const btn = wrapper.querySelector('.js-file-btn');
+        const deleteBtn = wrapper.querySelector('.js-file-delete');
+        
+        const originalText = fileName.textContent;
+
+        // Клик по кнопке вызывает клик по скрытому инпуту
+        btn.addEventListener('click', () => input.click());
+
+        // При выборе файла
+        input.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                fileName.textContent = this.files[0].name;
+                deleteBtn.style.display = 'block';
+                btn.style.display = 'none';
+				wrapper.classList.add('active');
+            }
+        });
+
+        // Удаление
+        deleteBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            input.value = '';
+            fileName.textContent = originalText;
+            deleteBtn.style.display = 'none';
+            btn.style.display = 'block';
+			wrapper.classList.remove('active');
+        });
+    });
+}
+
+
 // Запуск функций
 document.addEventListener('DOMContentLoaded', () => {
 	setScrollbarWidth();
 	setHeader();
+	initFileLoaders();
 })

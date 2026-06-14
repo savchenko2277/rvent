@@ -3,4 +3,155 @@
 .footer {
 	$self: &;
 
+	color: $lightText;
+	background: $darkText;
+
+	&__container {
+		padding-top: fluid(150px, 80px);
+	}
+
+	&__top {
+		display: flex;
+		flex-direction: row;
+		align-items: start;
+		justify-content: space-between;
+		margin-bottom: fluid(100px, 60px);
+
+		@include media("<=xs") {
+			flex-direction: column;
+			justify-content: start;
+			gap: 30px;
+		}
+	}
+
+	&__title {
+		line-height: 100%;
+	}
+
+	&__desc {
+		display: flex;
+		flex-direction: column;
+		text-align: right;
+		font-weight: 500;
+		color: #A3A1A1;
+
+		@include media("<=xs") {
+			order: -1;
+			text-align: start;
+		}
+	}
+
+	&__content {
+		display: grid;
+		grid-template-columns: auto minmax(auto, 559px);
+		justify-content: space-between;
+		margin-bottom: fluid(100px, 60px);
+		gap: 60px;
+
+		@include media("<=xs") {
+			grid-template-columns: 100%;
+		}
+	}
+
+	&__columns {
+		display: grid;
+		grid-template-columns: repeat(3, auto);
+		gap: 74.5px;
+
+		@include media("<=lg") {
+			gap: 40px;
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@include media("<=xs") {
+			grid-template-columns: 100%;
+		}
+	}
+
+	&__column {
+		max-width: 215px;
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+	}
+
+	&__item {
+		
+	}
+
+	&__item-title {
+		margin-bottom: 20px;
+		font-weight: 500;
+		color: #A3A1A1;
+	}
+
+	&__item-list {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+
+		&_info {
+			li {
+				text-transform: uppercase;
+				font-family: "STAPEL";
+			}
+		}
+
+		&_socials {
+			flex-direction: row;
+			align-items: center;
+			gap: 5px;
+			flex-wrap: wrap;
+
+			li {
+				display: flex;
+				flex-direction: row;
+				p {
+					position: relative;
+
+					&::before {
+						content: '';
+						position: absolute;
+						top: calc(100% + 2px);
+						left: 0;
+						width: 100%;
+						height: 1px;
+						background: $lightText;
+					}
+				}
+			}
+
+			li:not(:last-child) {
+				&::after {
+					content: '/';
+					margin-left: 5px;
+				}
+			}
+		}
+	}
+
+	&__item-item {
+		font-family: "STAPEL";
+	}
+
+	&__docs {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	&__docs-item {
+		font-size: 12px;
+		line-height: 100%;
+	}
+
+	&__form {}
+
+	&__logo {
+		img {
+			width: 100%;
+			object-fit: contain;
+		}
+	}
+
 }

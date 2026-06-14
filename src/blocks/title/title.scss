@@ -1,0 +1,16 @@
+@use 'lib' as *;
+
+.title {
+	$self: &;
+
+	font-family: "STAPEL";
+	text-transform: uppercase;
+	font-size: 30px;
+
+	&_big {
+		font-size: fluid(50px, 27px);
+		font-weight: 600;
+		letter-spacing: 2px;
+		
+	}
+}
