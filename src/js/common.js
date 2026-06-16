@@ -1,8 +1,31 @@
 import { throttle } from "./libs/utils";
 import "./polyfills.js";
 import "./blocks.js";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 // Функции
+
+const scrollController = {
+	disable() {
+		// 1. Останавливаем движок скролла GSAP
+		if (ScrollSmoother.get()) {
+			ScrollSmoother.get().paused(true);
+		}
+		// 2. Дополнительно скрываем скроллбар, если нужно
+		document.body.style.overflow = 'hidden';
+	},
+
+	enable() {
+		// 1. Включаем движок обратно
+		if (ScrollSmoother.get()) {
+			ScrollSmoother.get().paused(false);
+		}
+		// 2. Возвращаем скроллбар
+		document.body.style.removeProperty('overflow');
+	}
+};
 
 // Ширина скроллбара
 const setScrollbarWidth = () => {
@@ -13,71 +36,177 @@ const setHeader = () => {
 	const header = document.querySelector('header');
 	if (!header) return;
 
+	// --- Логика добавления класса по скроллу ---
+	const handleScroll = () => {
+		if (window.scrollY > 5) {
+			header.classList.add('header_light');
+		} else {
+			header.classList.remove('header_light');
+		}
+	};
+
+	// Слушаем событие прокрутки
+	window.addEventListener('scroll', handleScroll);
+
+	// Вызываем один раз сразу, на случай если страница загрузилась с прокруткой
+	handleScroll();
+	// -------------------------------------------
+
 	const burger = header.querySelector('.header__burger');
 	const items = header.querySelectorAll('.header__item');
 
-	// Логика бургера
 	burger.addEventListener('click', () => {
 		header.classList.toggle('header_open');
-		document.body.classList.toggle("scroll-lock", header.classList.contains('header_open'));
+
+		if (header.classList.contains('header_open')) {
+			scrollController.disable();
+		} else {
+			scrollController.enable();
+		}
 	});
 
-	// Логика аккордеона по клику
 	items.forEach(item => {
 		item.addEventListener('click', (e) => {
-			// Работает только на экранах <= 1100px
 			if (window.innerWidth <= 1100) {
-				// Закрываем другие открытые элементы (опционально)
 				items.forEach(otherItem => {
 					if (otherItem !== item) otherItem.classList.remove('_active');
 				});
-
 				item.classList.toggle('_active');
 			}
 		});
 	});
-}
+};
 
 const initFileLoaders = () => {
-    const wrappers = document.querySelectorAll('.js-file-wrapper');
+	const wrappers = document.querySelectorAll('.js-file-wrapper');
 
-    wrappers.forEach(wrapper => {
-        const input = wrapper.querySelector('.js-file-input');
-        const fileName = wrapper.querySelector('.js-file-name');
-        const btn = wrapper.querySelector('.js-file-btn');
-        const deleteBtn = wrapper.querySelector('.js-file-delete');
-        
-        const originalText = fileName.textContent;
+	wrappers.forEach(wrapper => {
+		const input = wrapper.querySelector('.js-file-input');
+		const fileName = wrapper.querySelector('.js-file-name');
+		const btn = wrapper.querySelector('.js-file-btn');
+		const deleteBtn = wrapper.querySelector('.js-file-delete');
 
-        // Клик по кнопке вызывает клик по скрытому инпуту
-        btn.addEventListener('click', () => input.click());
+		const originalText = fileName.textContent;
 
-        // При выборе файла
-        input.addEventListener('change', function() {
-            if (this.files.length > 0) {
-                fileName.textContent = this.files[0].name;
-                deleteBtn.style.display = 'block';
-                btn.style.display = 'none';
+		// Клик по кнопке вызывает клик по скрытому инпуту
+		btn.addEventListener('click', () => input.click());
+
+		// При выборе файла
+		input.addEventListener('change', function () {
+			if (this.files.length > 0) {
+				fileName.textContent = this.files[0].name;
+				deleteBtn.style.display = 'block';
+				btn.style.display = 'none';
 				wrapper.classList.add('active');
-            }
-        });
+			}
+		});
 
-        // Удаление
-        deleteBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            input.value = '';
-            fileName.textContent = originalText;
-            deleteBtn.style.display = 'none';
-            btn.style.display = 'block';
+		// Удаление
+		deleteBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+			input.value = '';
+			fileName.textContent = originalText;
+			deleteBtn.style.display = 'none';
+			btn.style.display = 'block';
 			wrapper.classList.remove('active');
-        });
-    });
+		});
+	});
 }
 
+const setGsap = () => {
+	gsap.registerPlugin(ScrollTrigger);
+
+	const header = document.querySelector('.header');
+	const counters = document.querySelectorAll(".counter-animated");
+
+	ScrollTrigger.create({
+		trigger: ".cases__items", // Секция, за которой следим
+		start: "top top",  // Когда верх секции касается верха экрана
+		end: "bottom top", // Когда низ секции уходит за верх экрана
+
+		onEnter: () => header.classList.add('header_hidden'),     // Зашли в секцию
+		onLeave: () => header.classList.remove('header_hidden'),  // Вышли вниз
+		onEnterBack: () => header.classList.add('header_hidden'), // Вернулись снизу
+		onLeaveBack: () => header.classList.remove('header_hidden') // Вернулись вверх
+	});
+
+	gsap.utils.toArray(".cases__item").forEach((card, i) => {
+		const cards = document.querySelectorAll(".cases__item");
+		document.documentElement.style.setProperty('--cards-count', cards.length);
+		
+		ScrollTrigger.create({
+			trigger: card,
+			start: `top top+=${0 + (i * 50)}px`,
+			endTrigger: ".cases__items",
+			end: "bottom bottom",
+			pin: true,
+			pinSpacing: false,
+			onEnter: () => {
+				card.classList.add("cases__item_active");
+			},
+
+			// Убираем только если скроллим назад и прошли точку старта
+			onLeaveBack: () => {
+				card.classList.remove("cases__item_active");
+			}
+		});
+	});
+
+	counters.forEach((counter) => {
+		// Получаем конечное число (например, из data-target="1000" или текста)
+		const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.innerText);
+
+		// Создаем объект для анимации
+		const val = { score: 0 };
+
+		gsap.to(val, {
+			score: target,
+			duration: 3,
+			ease: "power2.out",
+			scrollTrigger: {
+				trigger: counter,
+				start: "top 90%",
+				toggleActions: "play none none none"
+			},
+			onUpdate: () => {
+				// Обновляем текст элемента. Math.floor убирает дробные части
+				counter.innerText = Math.floor(val.score);
+			}
+		});
+	});
+
+	gsap.to(".company__photo_animated img", {
+		scrollTrigger: {
+			trigger: ".company__columns",
+			start: "top 65%",
+			end: "top 20%",
+			scrub: 1
+		},
+		aspectRatio: 10 / 16,
+	});
+}
+
+const setSmoothScroll = () => {
+	gsap.registerPlugin(ScrollSmoother);
+	ScrollSmoother.create({
+		wrapper: '.wrapper',
+		content: '.content',
+		smooth: 2,
+		effects: true,
+		ignoreMobileResize: true,
+		preventDefault: true,
+		normalizeScroll: true,
+		smoothTouch: true,
+		smoothSpline: true,
+	});
+}
 
 // Запуск функций
 document.addEventListener('DOMContentLoaded', () => {
 	setScrollbarWidth();
 	setHeader();
 	initFileLoaders();
+	setGsap();
+	setSmoothScroll();
+
 })

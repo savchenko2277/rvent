@@ -38,11 +38,6 @@ body, html {
 	min-height: 100vh;
 }
 
-body.scroll-lock {
-	overflow: hidden;
-	padding-right: var(--sw);
-}
-
 .footer {
 	flex: 0 0 auto; 
 	margin-top: auto; 

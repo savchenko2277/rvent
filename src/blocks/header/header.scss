@@ -9,6 +9,81 @@
 	width: 100%;
 	z-index: 100;
 	color: $lightText;
+	transition: opacity $transition;
+
+	&_hidden {
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+	}
+
+	&_light {
+		#{$self}__top {
+			background-color: $lightText;
+		}
+		#{$self}__logo img {
+			&:nth-child(1) {
+				display: none;
+			}
+
+			&:nth-child(2) {
+				display: block;
+			}
+		}
+
+		#{$self}__burger {
+			&::before,
+			&::after {
+				background: $darkText;
+			}
+		}
+		#{$self}__menu {
+			background: rgba($color: $lightText, $alpha: 0.6);
+			color: $darkText;
+		}
+		#{$self}__item-arrow {
+			background: $darkText;
+			img {
+				&:nth-child(1) {
+					display: block;
+				}
+
+				&:nth-child(2) {
+					display: none;
+				}
+			}
+		}
+		#{$self}__item-name {
+			&::after {
+				background: $darkText;
+			}
+		}
+		#{$self}__contacts-column-list_socials li p::before {
+			background: $darkText;
+		}
+		#{$self}__button {
+			color: $darkText;
+
+			img {
+				&:nth-child(1) {
+					display: none;
+				}
+
+				&:nth-child(2) {
+					display: block;
+				}
+			}
+			&::after {
+				background: $darkText;
+			}
+		}
+	}
+
+	&.header_open.header_light {
+		#{$self}__top {
+			background: none;
+		}
+	}
 
 	&_open {
 		#{$self}__menu {
@@ -41,6 +116,7 @@
 	&__top {
 		position: relative;
 		z-index: 2;
+		transition: all $transition;
 	}
 
 	&__top-container {
@@ -392,6 +468,11 @@
 		line-height: 100%;
 		width: fit-content;
 		height: fit-content;
+		transition: all $transition;
+
+		p {
+			line-height: 70%;
+		}
 
 		&_pc {
 			@include media("<=xs") {
@@ -435,6 +516,8 @@
 				height: 10px;
 				object-fit: contain;
 				transition: all $transition;
+
+				animation: fadeIn 0.5s forwards;
 
 				&:nth-child(1) {
 					display: block;

@@ -1,0 +1,11 @@
+@use 'lib' as *;
+
+.wrapper {
+	$self: &;
+
+	.scroll-lock {
+		overflow: hidden;
+		padding-right: var(--sw);
+		height: 100vh;
+	}
+}

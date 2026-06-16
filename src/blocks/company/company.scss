@@ -1,0 +1,130 @@
+@use 'lib' as *;
+
+.company {
+	$self: &;
+
+	padding: fluid(150px, 80px) 0;
+
+	&__container {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__top {
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+		justify-content: space-between;
+		align-items: end;
+		margin-bottom: fluid(150px, 80px);
+		gap: 40px;
+
+		@include media("<=xs") {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+
+	&__counter {
+		font-size: fluid(180px, 64px);
+		font-family: "STAPEL";
+		text-transform: uppercase;
+		line-height: 70%;
+		font-weight: 400;
+	}
+
+	&__top-desc {
+		max-width: 221px;
+	}
+
+	&__about {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		justify-content: space-between;
+		margin-bottom: fluid(100px, 60px);
+		gap: 20px;
+
+		@include media("<=md") {
+			display: flex;
+			flex-direction: column;
+			gap: 30px;
+		}
+
+	}
+
+	&__desc {
+		font-weight: 500;
+		color: #A3A1A1;
+		display: flex;
+		flex-direction: column;
+		grid-column: span 1;
+	}
+
+	&__title {
+		max-width: 1024px;
+		grid-column: span 3;
+		font-size: fluid(30px, 20px);
+
+		span {
+			padding-left: 20%;
+		}
+	}
+
+	&__columns {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 20px;
+
+		@include media("<=md") {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 40px 10px;
+		}
+	}
+
+	&__column {}
+
+	&__photo {
+		grid-column: span 1;
+		overflow: hidden;
+		aspect-ratio: 1 / 1;
+
+		&_last {
+			@include media("<=md") {
+				grid-column: span 2;
+				order: -2;
+			}
+		}
+
+		&_main {
+			
+		}
+
+		img {
+			width: 100%;
+			object-fit: cover;
+			display: block;
+			aspect-ratio: 1 / 1;
+		}
+
+		&_animated {
+			aspect-ratio: 10 / 16;
+
+			@include media("<=md") {
+
+			}
+		}
+	}
+
+	&__text {
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+		padding: 0 30px;
+
+		@include media("<=md") {
+			grid-column: span 2;
+			padding: 0;
+			order: -1;
+		}
+	}
+
+}

@@ -1,46 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru"> 
+    
 @@include("_head.html", {"id":"home"}) 
 @@include("_header.html") 
 
 <main class="main">
 
-    <section class="promo">
-        <div class="promo__container container">
-            <ul class="promo__navigation">
-                <li class="promo__navigation-item">
-                    <a href="#">коммерческое строительство</a>
-                </li>
-                <li class="promo__navigation-item">
-                    <a href="#">жилые комплексыо</a>
-                </li>
-                <li class="promo__navigation-item">
-                    <a href="#">застройщикам</a>
-                </li>
-                <li class="promo__navigation-item">
-                    <a href="#">строительным компаниям</a>
-                </li>
-                <li class="promo__navigation-item">
-                    <a href="#">полный цикл работ</a>
-                </li>
-            </ul>
-            <div class="promo__columns">
-                <div class="promo__content">
-                    <h1 class="promo__title title">
+        <div class="wrapper">
+
+            <div class="content">
+
+                <section class="promo">
+                    <div class="promo__container container">
+                        <ul class="promo__navigation">
+                            <li class="promo__navigation-item">
+                                <a href="#">коммерческое строительство</a>
+                            </li>
+                            <li class="promo__navigation-item">
+                                <a href="#">жилые комплексыо</a>
+                            </li>
+                            <li class="promo__navigation-item">
+                                <a href="#">застройщикам</a>
+                            </li>
+                            <li class="promo__navigation-item">
+                                <a href="#">строительным компаниям</a>
+                            </li>
+                            <li class="promo__navigation-item">
+                                <a href="#">полный цикл работ</a>
+                            </li>
+                        </ul>
+                        <div class="promo__columns">
+                            <div class="promo__content">
+                                <h1 class="promo__title title">
                         Фасадные системы для жилых комплексов и коммерческих объектов
                     </h1>
-                    <p class="promo__desc">
+                                <p class="promo__desc">
                         R-VENT — фасадное направление строительного холдинга с опытом более 12 лет. Выполняем вентилируемые фасады и комплексные фасадные решения для жилых, коммерческих и общественных зданий.
                     </p>
-                </div>
-                <div class="promo__button button button_blue">
-                    <span>К ПРОЕКТАМ</span>
-                </div>
-            </div>
-        </div>
-        <div class="promo__bg">
-            <img loading="lazy" src="./img/promo-bg.webp" alt="">
-        </div>
-    </section>
+                            </div>
+                            <div class="promo__button button button_blue">
+                                <span>К ПРОЕКТАМ</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="promo__bg">
+                        <img loading="lazy" src="./img/promo-bg.webp" alt="">
+                    </div>
+                </section>
 
-</main>
+                <section class="company">
+                    <div class="company__container container">
+                        <div class="company__top">
+                            <p class="company__counter">
+                            /<span class="counter-animated">3486</span>м3
+                        </p>
+                            <p class="company__top-desc">
+                            Общая площадь фасадных работ компании Р-Вент
+                        </p>
+                        </div>
+                        <div class="company__about">
+                            <p class="company__desc">
+                    [О компании.
+                    <span>Работаем с 2002 года]</span>
+                            </p>
+                            <h2 class="company__title title">
+                                <span>Р-Вент — фасадное направление</span> строительного холдинга с опытом более 12 лет. Выполняем вентилируемые фасады для жилых комплексов, коммерческих и общественных зданий, объединяя инженерный подход, контроль качества и практический опыт
+                            </h2>
+                        </div>
+                        <div class="company__columns">
+                            <div class="company__column company__photo company__photo_main">
+                                <img src="./img/company/1.webp" alt="">
+                            </div>
+                            <div class="company__column company__photo company__photo_animated">
+                                <img src="./img/company/2.webp" alt="">
+                            </div>
+                            <div class="company__column company__text">
+                                <p>
+                        Наша команда использует опыт, накопленный в общестроительных работах, и применяет его в фасадном направлении: от анализа проектных решений до организации монтажных работ на объекте. Мы работаем с жилыми комплексами, коммерческими зданиями и объектами, где важны не только цена, но и качество исполнения, сроки, внешний вид фасада и ответственность подрядчика после завершения работ.
+                    </p>
+                                <p>
+                        Одно из наших преимуществ — возможность закрывать фасадный контур комплексно. Мы можем выполнять вентилируемые фасады, мокрые фасады, прорабатывать узлы примыкания между разными системами, а также участвовать в выполнении витражей, ограждений и смежных строительных работ через ресурсы холдинга.
+                    </p>
+                            </div>
+                            <div class="company__column company__photo company__photo_last">
+                                <img src="./img/company/3.webp" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-@@include("_bottom.html")
+                <section class="cases">
+                    <div class="cases__top container">
+                        <h2 class="cases__title title">
+                            <span>Компания «Р-Вент» за 12 лет работы</span> реализовала десятки проектов по монтажу вентилируемых фасадов — от жилых комплексов до коммерческих и общественных зданий. Ниже — несколько показательных кейсов, демонстрирующих наш опыт и компетенции
+                        </h2>
+                        <p class="cases__desc">
+                            [Наши работы.
+                            <span>Кейсы.]</span>
+                        </p>
+                    </div>
+                    <div class="cases__items">
+                        <div class="cases__item">
+                            <div class="cases__item-container container">
+                                <h4 class="cases__item-title">апартаменты «пионерск»</h4>
+                                <div class="cases__item-content">
+                                    <p class="cases__item-number">01</p>
+                                    <div class="cases__item-about">
+                                        <p class="cases__item-desc">
+                                            [Наши объекты]
+                                        </p>
+                                        <h5 class="cases__item-sub-title">АПАРТАМЕНТЫ <span>«ПИОНЕРСК»</span></h5>
+                                        <p class="cases__item-text">
+                                            Фасадные работы в апартаментах «Пионерск» выполнялись комплексно с соблюдением всех технологических норм и требований проектной документации. На начальном этапе специалисты провели тщательное обследование несущих стен: оценили их состояние, выявили и зафиксировали возможные дефекты — трещины, отслоения, высолы.
+                                        </p>
+                                        <a href="#" class="cases__item-link">
+                                            Подробнее об кейсе
+                                            <img src="./img/icons/arrow-tr-light.svg" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cases__item-overlay"></div>
+                            <div class="cases__item-bg">
+                                <img loading="lazy" src="./img/cases/1.webp" alt="">
+                            </div>
+                        </div>
+                        <div class="cases__item">
+                            <div class="cases__item-container container">
+                                <h4 class="cases__item-title">гостиница «зеленоградск»</h4>
+                                <div class="cases__item-content">
+                                    <p class="cases__item-number">02</p>
+                                    <div class="cases__item-about">
+                                        <p class="cases__item-desc">
+                                            [Наши объекты]
+                                        </p>
+                                        <h5 class="cases__item-sub-title">гостиница <span>«зеленоградск»</span></h5>
+                                        <p class="cases__item-text">
+                                            Фасадные работы в гостинице «Зеленоградск» выполнены комплексно с соблюдением строительных норм и проектной документации. Сначала специалисты обследовали несущие стены, выявили и зафиксировали дефекты, выполнили геодезическую съёмку для определения отклонений плоскостей. Поверхность стен очистили от загрязнений и старой отделки, локальные дефекты заделали ремонтными составами, при необходимости провели грунтование.
+                                        </p>
+                                        <a href="#" class="cases__item-link">
+                                            Подробнее об кейсе
+                                            <img src="./img/icons/arrow-tr-light.svg" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cases__item-overlay"></div>
+                            <div class="cases__item-bg">
+                                <img loading="lazy" src="./img/cases/2.webp" alt="">
+                            </div>
+                        </div>
+                        <div class="cases__item">
+                            <div class="cases__item-container container">
+                                <h4 class="cases__item-title">жилой комплекс «На подлесной»</h4>
+                                <div class="cases__item-content">
+                                    <p class="cases__item-number">03</p>
+                                    <div class="cases__item-about">
+                                        <p class="cases__item-desc">
+                                            [Наши объекты]
+                                        </p>
+                                        <h5 class="cases__item-sub-title">жилой комплекс <span>«На подлесной»</span></h5>
+                                        <p class="cases__item-text">
+                                            Фасадные работы вжилом комплексе «На Подлесной» в г. Зеленоградск выполнены в соответствии с проектной документацией и действующими строительными нормами. На начальном этапе провели детальное обследование несущих конструкций здания, выявили и задокументировали имеющиеся дефекты. Выполнили геодезическую съёмку для точной разметки монтажа. Поверхность стен очистили от загрязнений и старой отделки, локальные повреждения устранили с помощью специализированных ремонтных составов, при необходимости нанесли грунтовочный слой.
+                                        </p>
+                                        <a href="#" class="cases__item-link">
+                                            Подробнее об кейсе
+                                            <img src="./img/icons/arrow-tr-light.svg" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cases__item-overlay"></div>
+                            <div class="cases__item-bg">
+                                <img loading="lazy" src="./img/cases/3.webp" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            @@include("_footer.html")
+
+        </div>
+        </div>
+
+    </main>
+
+@@include("_sprite.svg")
+<svg width="0" height="0">
+  <defs>
+    <mask id="gradient-mask">
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="white" stop-opacity="0" /> <stop offset="100%" stop-color="white" stop-opacity="1" /> </linearGradient>
+      <rect width="100%" height="100%" fill="url(#g)" />
+    </mask>
+  </defs>
+</svg>
+<script src="js/common.js?v=0"></script>
+</body>
+</html>
