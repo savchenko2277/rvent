@@ -144,102 +144,103 @@ const initFileLoaders = () => {
 }
 
 const setGsap = () => {
-	gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-	const header = document.querySelector('.header');
-	const counters = document.querySelectorAll(".counter-animated");
+    const header = document.querySelector('.header');
+    const counters = document.querySelectorAll(".counter-animated");
 
-	ScrollTrigger.create({
-		trigger: ".cases__items", // Секция, за которой следим
-		start: "top top",  // Когда верх секции касается верха экрана
-		end: "bottom top", // Когда низ секции уходит за верх экрана
+    ScrollTrigger.create({
+        trigger: ".cases__items",
+        start: "top top",
+        end: "bottom top",
+        onEnter: () => header.classList.add('header_hidden'),
+        onLeave: () => header.classList.remove('header_hidden'),
+        onEnterBack: () => header.classList.add('header_hidden'),
+        onLeaveBack: () => header.classList.remove('header_hidden')
+    });
 
-		onEnter: () => header.classList.add('header_hidden'),     // Зашли в секцию
-		onLeave: () => header.classList.remove('header_hidden'),  // Вышли вниз
-		onEnterBack: () => header.classList.add('header_hidden'), // Вернулись снизу
-		onLeaveBack: () => header.classList.remove('header_hidden') // Вернулись вверх
-	});
+    // ОПТИМИЗАЦИЯ: Вынесли поиск и установку переменной из цикла
+    const cards = gsap.utils.toArray(".cases__item");
+    if (cards.length > 0) {
+        document.documentElement.style.setProperty('--cards-count', cards.length);
+    }
 
-	gsap.utils.toArray(".cases__item").forEach((card, i) => {
-		const cards = document.querySelectorAll(".cases__item");
-		document.documentElement.style.setProperty('--cards-count', cards.length);
+    cards.forEach((card, i) => {
+        ScrollTrigger.create({
+            trigger: card,
+            start: `top top+=${0 + (i * 50)}px`,
+            endTrigger: ".cases__items",
+            end: "bottom bottom",
+            pin: true,
+            pinSpacing: false,
+            onEnter: () => card.classList.add("cases__item_active"),
+            onLeaveBack: () => card.classList.remove("cases__item_active")
+        });
+    });
 
-		ScrollTrigger.create({
-			trigger: card,
-			start: `top top+=${0 + (i * 50)}px`,
-			endTrigger: ".cases__items",
-			end: "bottom bottom",
-			pin: true,
-			pinSpacing: false,
-			onEnter: () => {
-				card.classList.add("cases__item_active");
-			},
+    counters.forEach((counter) => {
+        // ОПТИМИЗАЦИЯ: textContent вместо innerText
+        const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.textContent);
+        const val = { score: 0 };
 
-			// Убираем только если скроллим назад и прошли точку старта
-			onLeaveBack: () => {
-				card.classList.remove("cases__item_active");
-			}
-		});
-	});
+        gsap.to(val, {
+            score: target,
+            duration: 3,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: counter,
+                start: "top 90%",
+                toggleActions: "play none none none"
+            },
+            onUpdate: () => {
+                // ОПТИМИЗАЦИЯ: textContent не вызывает reflow
+                counter.textContent = Math.floor(val.score);
+            }
+        });
+    });
 
-	counters.forEach((counter) => {
-		// Получаем конечное число (например, из data-target="1000" или текста)
-		const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.innerText);
+    gsap.to(".promo__bg img", {
+        scrollTrigger: {
+            trigger: ".promo",
+            start: "bottom 100%",
+            end: "bottom 10%",
+            scrub: true // Убрали scrub: 1, чтобы скролл был более жестко привязан к нативному на iOS
+        },
+        scale: 1.5,
+        willChange: "transform" // Подсказка браузеру вынести на GPU
+    });
 
-		// Создаем объект для анимации
-		const val = { score: 0 };
-
-		gsap.to(val, {
-			score: target,
-			duration: 3,
-			ease: "power2.out",
-			scrollTrigger: {
-				trigger: counter,
-				start: "top 90%",
-				toggleActions: "play none none none"
-			},
-			onUpdate: () => {
-				// Обновляем текст элемента. Math.floor убирает дробные части
-				counter.innerText = Math.floor(val.score);
-			}
-		});
-	});
-
-	gsap.to(".promo__bg img", {
-		scrollTrigger: {
-			trigger: ".promo",
-			start: "bottom 100%",
-			end: "bottom 10%",
-			scrub: 1
-		},
-		scale: 1.5
-	});
-
-	gsap.to(".company__photo_animated img", {
-		scrollTrigger: {
-			trigger: ".company__columns",
-			start: "top 65%",
-			end: "top 20%",
-			scrub: 1
-		},
-		aspectRatio: 10 / 16,
-	});
+    // ОПТИМИЗАЦИЯ: Заменили aspectRatio на clip-path или scaleY (Зависит от вашей верстки)
+    // Если нужно просто обрезать картинку, используйте clip-path. 
+    // Предполагается, что изначально картинка полноразмерная.
+    gsap.to(".company__photo_animated img", {
+        scrollTrigger: {
+            trigger: ".company__columns",
+            start: "top 65%",
+            end: "top 20%",
+            scrub: true
+        },
+        // Пример анимации обрезки сверху и снизу (имитация смены соотношения сторон)
+        clipPath: "inset(15% 0% 15% 0%)", 
+        willChange: "clip-path" // Подсказка для GPU
+    });
 }
 
 const setSmoothScroll = () => {
-	gsap.registerPlugin(ScrollSmoother);
+    gsap.registerPlugin(ScrollSmoother);
 
-	ScrollSmoother.create({
-			wrapper: '.wrapper',
-			content: '.content',
-			smooth: 2,
-			effects: true,
-			ignoreMobileResize: true,
-			preventDefault: true,
-			normalizeScroll: true,
-			smoothTouch: false,
-			smoothSpline: true,
-		});
+    // Проверяем, мобильное ли устройство (простой способ)
+    const isMobile = window.matchMedia("(max-width: 768px)").matches || ScrollTrigger.isTouch;
+
+    ScrollSmoother.create({
+        wrapper: '.wrapper',
+        content: '.content',
+        smooth: isMobile ? 0 : 2,
+        effects: true,
+        ignoreMobileResize: true,
+        normalizeScroll: !isMobile, 
+        smoothTouch: false,
+    });
 }
 
 const setAdvantagesSection = () => {
