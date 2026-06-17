@@ -146,26 +146,21 @@ const initFileLoaders = () => {
 const setGsap = () => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Предотвращаем рывки интерфейса при появлении/исчезновении нижней панели Safari
-    ScrollTrigger.config({ ignoreMobileResize: true });
-
     const header = document.querySelector('.header');
     const counters = document.querySelectorAll(".counter-animated");
 
     ScrollTrigger.create({
-        trigger: ".cases__items", 
-        start: "top top",  
-        end: "bottom top", 
-
-        onEnter: () => header.classList.add('header_hidden'),     
-        onLeave: () => header.classList.remove('header_hidden'),  
-        onEnterBack: () => header.classList.add('header_hidden'), 
-        onLeaveBack: () => header.classList.remove('header_hidden') 
+        trigger: ".cases__items",
+        start: "top top",
+        end: "bottom top",
+        onEnter: () => header.classList.add('header_hidden'),
+        onLeave: () => header.classList.remove('header_hidden'),
+        onEnterBack: () => header.classList.add('header_hidden'),
+        onLeaveBack: () => header.classList.remove('header_hidden')
     });
 
+    // Оставил оптимизацию: ищем карточки только один раз
     const cards = gsap.utils.toArray(".cases__item");
-    
-    // Оптимизация: устанавливаем переменную один раз
     if (cards.length > 0) {
         document.documentElement.style.setProperty('--cards-count', cards.length);
     }
@@ -178,18 +173,12 @@ const setGsap = () => {
             end: "bottom bottom",
             pin: true,
             pinSpacing: false,
-            anticipatePin: 1, // Сглаживает старт прилипания карточки на iOS (убирает дерганье)
-            onEnter: () => {
-                card.classList.add("cases__item_active");
-            },
-            onLeaveBack: () => {
-                card.classList.remove("cases__item_active");
-            }
+            onEnter: () => card.classList.add("cases__item_active"),
+            onLeaveBack: () => card.classList.remove("cases__item_active")
         });
     });
 
     counters.forEach((counter) => {
-        // textContent работает быстрее, чем innerText (не вызывает reflow)
         const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.textContent);
         const val = { score: 0 };
 
@@ -213,10 +202,10 @@ const setGsap = () => {
             trigger: ".promo",
             start: "bottom 100%",
             end: "bottom 10%",
-            scrub: 0.8 // Числовое значение дает инерцию анимации, маскируя рывки на 120 Гц
+            scrub: 1 // Вернул вашу единицу
         },
         scale: 1.5,
-        force3D: true, // Отправляем анимацию на GPU
+        force3D: true, // Аппаратное ускорение для GPU
         willChange: "transform"
     });
 
@@ -225,27 +214,25 @@ const setGsap = () => {
             trigger: ".company__columns",
             start: "top 65%",
             end: "top 20%",
-            scrub: 0.8 // Инерция для сглаживания
+            scrub: 1 // Вернул вашу единицу
         },
-        aspectRatio: 10 / 16 // Вернул ваш оригинальный вариант
+        aspectRatio: 10 / 16, // Оставил ваш изначальный вариант
+        force3D: true // Аппаратное ускорение
     });
 }
 
 const setSmoothScroll = () => {
     gsap.registerPlugin(ScrollSmoother);
 
-    // Проверяем мобильное устройство
-    const isMobile = window.matchMedia("(max-width: 768px)").matches || ScrollTrigger.isTouch;
-
     ScrollSmoother.create({
         wrapper: '.wrapper',
         content: '.content',
-        smooth: isMobile ? 0 : 2, // Отключаем смузер на мобилках для плавного нативного скролла
+        smooth: 2,
         effects: true,
         ignoreMobileResize: true,
-        preventDefault: false, // На iOS должно быть false
-        normalizeScroll: !isMobile, // Отключаем нормализацию на мобилках (главная причина лагов)
-        smoothTouch: false,
+        preventDefault: true, 
+        normalizeScroll: true, // Вернули, так как он спасает пины
+        smoothTouch: 0.1, // <-- ИЗМЕНЕНИЕ: Минимальное сглаживание тача для синхронизации кадров на 120 Гц
         smoothSpline: true,
     });
 }
