@@ -1,0 +1,253 @@
+@use 'lib' as *;
+
+.advantages {
+	$self: &;
+
+	background: #F9F9F9;
+	padding: fluid(150px, 80px) 0;
+	overflow: hidden;
+
+	&__container {}
+
+	&__top {
+		margin-bottom: fluid(100px, 60px);
+	}
+
+	&__about {
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+		justify-content: space-between;
+		gap: 30px;
+
+		@include media("<=xs") {
+			grid-template-columns: 100%;
+			justify-content: start;
+		}
+	}
+
+	&__title {
+		font-size: fluid(30px, 20px);
+		font-weight: 700;
+		max-width: 1024px;
+		line-height: 140%;
+		letter-spacing: 1px;
+
+		span {
+			padding-left: 25%;
+		}
+	}
+
+	&__title-bottom {
+		display: block;
+		padding-top: 30px;
+	}
+
+	&__desc {
+		display: flex;
+		flex-direction: column;
+		text-align: right;
+		font-weight: 500;
+		color: #A3A1A1;
+
+		@include media("<=xs") {
+			order: -1;
+			text-align: start;
+		}
+	}
+
+	&__columns {
+		display: grid;
+		grid-template-columns: 464px 1fr;
+		justify-content: space-between;
+
+		@include media("<=md") {
+			grid-template-columns: 0.4fr 0.6fr;
+		}
+
+		@include media("<=xs") {
+			grid-template-columns: 100%;
+			gap: 60px;
+		}
+	}
+
+	&__column {
+		&:nth-child(1) {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			
+			@include media("<=xs") {
+				overflow: visible;
+			}
+		}
+
+		&:nth-child(2) {
+			@include media("<=xs") {
+				display: none;
+			}
+		}
+
+		&:nth-child(3) {
+			display: flex;
+			flex-direction: column;
+			align-items: start;
+
+			@include media("<=xs") {
+				order: -1;
+			}
+			
+		}
+
+		&:nth-child(4) {
+			display: flex;
+			flex-direction: column;
+			justify-content: end;
+			align-items: end;
+		}
+	}
+
+	&__info.swiper {
+		max-height: 555px;
+		max-width: 327px;
+		margin: 0;
+
+		@include media("<=xs") {
+			max-width: 100%;
+			overflow: visible;
+		}
+	}
+
+	&__info-item.swiper-slide {
+		transition: all $transition;
+		max-height: fit-content;
+		height: fit-content !important;
+	}
+
+	&__info-top {
+		display: flex;
+		flex-direction: row;
+		align-items: start;
+		margin-bottom: 30px;
+		gap: 10px;
+	}
+
+	&__info-number {
+		font-size: 16px;
+		font-weight: 600;
+		
+		@include media("<=xs") {
+			font-size: 10px;
+		}
+	}
+
+	&__info-title {
+		display: none;
+
+		@include media("<=xs") {
+			display: block;
+			font-size: 20px;
+			font-family: "STAPEL";
+			text-transform: uppercase;
+		}
+	}
+
+	&__info-text {
+		line-height: 140%;
+	}
+
+	&__titles.swiper {
+		max-width: 908px;
+		max-height: 555px;
+		position: relative;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100px;
+			/* Высота зоны затухания */
+			background: linear-gradient(to bottom, rgba($color: #F9F9F9, $alpha: 1.0), rgba($color: #F9F9F9, $alpha: 0));
+			z-index: 10;
+			pointer-events: none;
+			/* Чтобы градиент не перекрывал клики */
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 100px;
+			/* Высота зоны затухания */
+			background: linear-gradient(to top, rgba($color: #F9F9F9, $alpha: 1.0), rgba($color: #F9F9F9, $alpha: 0));
+			z-index: 10;
+			pointer-events: none;
+			/* Чтобы градиент не перекрывал клики */
+		}
+
+		@include media("<=xs") {
+			display: none;
+		}
+	}
+
+	&__titles-item.swiper-slide {
+		font-family: "STAPEL";
+		font-size: fluid(50px, 20px);
+		text-transform: uppercase;
+		display: flex;
+		flex-direction: row;
+		align-items: start;
+		font-weight: 700;
+		gap: 10px;
+		opacity: 0.2;
+		max-height: fit-content;
+		transition: opacity $transition;
+		height: fit-content;
+
+		&.swiper-slide-active {
+			opacity: 1;
+		}
+
+		span {
+			display: block;
+			line-height: 140%;
+		}
+
+		b {
+			font-size: 16px;
+			line-height: 100%;
+			padding-top: 16px;
+
+		}
+	}
+
+	&__images.swiper {
+		width: 210px;
+		aspect-ratio: 210 / 105;
+		margin: 0;
+	}
+
+	&__items-image.swiper-slide {
+		width: 100%;
+		height: 100%;
+		transition: all $transition;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	&__bottom {}
+
+	&__button {
+		@include media("<=xs") {
+			width: 100%;
+		}
+	}
+
+}

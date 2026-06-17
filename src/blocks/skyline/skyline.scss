@@ -1,0 +1,20 @@
+@use 'lib' as *;
+
+.skyline {
+	$self: &;
+
+	position: relative;
+	height: 1510px;
+
+	@include media("<=xxlg") {
+		height: fluid(1350px, 750px);
+	}
+
+	img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}

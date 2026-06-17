@@ -4,8 +4,38 @@ import "./blocks.js";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import Swiper from "swiper";
+import { Controller, EffectFade } from 'swiper/modules';
+import { Fancybox } from '@fancyapps/ui';
 
 // Функции
+
+const setSwipers = () => {
+	const servicesSwiper = new Swiper('.services__swiper', {
+		slidesPerView: 1.1,
+		spaceBetween: 10,
+		breakpoints: {
+			960: {
+				slidesPerView: 2.5,
+				spaceBetween: 20
+			},
+		}
+	});
+
+	const certificatesSwiper = new Swiper('.certificates__swiper', {
+		slidesPerView: 1.15,
+		spaceBetween: 10,
+		breakpoints: {
+			960: {
+				slidesPerView: 4.5,
+				spaceBetween: 20
+			},
+			1440: {
+				slidesPerView: 5,
+			}
+		}
+	});
+}
 
 const scrollController = {
 	disable() {
@@ -133,7 +163,7 @@ const setGsap = () => {
 	gsap.utils.toArray(".cases__item").forEach((card, i) => {
 		const cards = document.querySelectorAll(".cases__item");
 		document.documentElement.style.setProperty('--cards-count', cards.length);
-		
+
 		ScrollTrigger.create({
 			trigger: card,
 			start: `top top+=${0 + (i * 50)}px`,
@@ -175,6 +205,16 @@ const setGsap = () => {
 		});
 	});
 
+	gsap.to(".promo__bg img", {
+		scrollTrigger: {
+			trigger: ".promo",
+			start: "bottom 100%",
+			end: "bottom 10%",
+			scrub: 1
+		},
+		scale: 1.5
+	});
+
 	gsap.to(".company__photo_animated img", {
 		scrollTrigger: {
 			trigger: ".company__columns",
@@ -188,16 +228,129 @@ const setGsap = () => {
 
 const setSmoothScroll = () => {
 	gsap.registerPlugin(ScrollSmoother);
+
 	ScrollSmoother.create({
-		wrapper: '.wrapper',
-		content: '.content',
-		smooth: 2,
-		effects: true,
-		ignoreMobileResize: true,
-		preventDefault: true,
-		normalizeScroll: true,
-		smoothTouch: true,
-		smoothSpline: true,
+			wrapper: '.wrapper',
+			content: '.content',
+			smooth: 2,
+			effects: true,
+			ignoreMobileResize: true,
+			preventDefault: true,
+			normalizeScroll: true,
+			smoothTouch: false,
+			smoothSpline: true,
+		});
+}
+
+const setAdvantagesSection = () => {
+	const advantages = document.querySelector('.advantages');
+	const titlesEl = document.querySelector('.advantages__titles');
+	if (!advantages || !titlesEl) return;
+
+	// 1. Инициализация инстансов
+	const swiperTitles = new Swiper('.advantages__titles', {
+		modules: [Controller],
+		direction: 'vertical',
+		slidesPerView: 'auto',
+		spaceBetween: 20,
+		centeredSlides: true,
+		initialSlide: 2,
+		grabCursor: true
+	});
+
+	const swiperInfo = new Swiper('.advantages__info', {
+		modules: [Controller, EffectFade],
+		slidesPerView: 1,
+		initialSlide: 2,
+		spaceBetween: 40,
+		allowTouchMove: true,
+		effect: 'fade',
+		fadeEffect: { crossFade: true },
+		breakpoints: {
+			0: { slidesPerView: 1.25, effect: 'slide', spaceBetween: 40 },
+			641: { slidesPerView: 1, effect: 'fade', spaceBetween: 0 }
+		}
+	});
+
+	const swiperImages = new Swiper('.advantages__images', {
+		modules: [EffectFade],
+		slidesPerView: 1,
+		initialSlide: 2,
+		spaceBetween: 20,
+		allowTouchMove: false,
+		effect: 'fade',
+		fadeEffect: { crossFade: true }
+	});
+
+	// 2. Обработчик синхронизации
+	const updateLogic = () => {
+		const isMobile = window.innerWidth <= 640;
+
+		if (isMobile) {
+			titlesEl.style.display = 'none';
+
+			// 1. Принудительно меняем параметры
+			swiperInfo.params.effect = 'slide';
+			swiperInfo.params.slidesPerView = 1.25;
+
+			// 2. Очищаем стили фейда, которые Swiper мог оставить на слайдах
+			swiperInfo.slides.forEach(slide => {
+				slide.style.opacity = '';
+				slide.style.visibility = '';
+				slide.style.position = '';
+				slide.style.zIndex = '';
+			});
+
+			// 3. Синхронизация
+			swiperInfo.off('slideChange');
+			swiperInfo.on('slideChange', () => {
+				swiperImages.slideTo(swiperInfo.activeIndex);
+			});
+
+			// 4. ГЛАВНОЕ: принудительный апдейт
+			swiperInfo.update();
+		} else {
+			titlesEl.style.display = 'block';
+
+			// Возвращаем настройки фейда
+			swiperInfo.params.effect = 'fade';
+			swiperInfo.params.slidesPerView = 1;
+
+			swiperTitles.update();
+			swiperTitles.controller.control = [swiperInfo, swiperImages];
+
+			swiperInfo.update();
+		}
+	};
+
+	// Слушаем ресайз
+	window.addEventListener('resize', updateLogic);
+	updateLogic();
+};
+
+const setStagesSection = () => {
+	const stages = document.querySelector('.stages');
+	if (!stages) return;
+
+	const items = stages.querySelectorAll('.stages__accordeon');
+
+	items.forEach(item => {
+		item.addEventListener('click', (e) => {
+			items.forEach(item => {
+				item.classList.remove('active');
+			});
+			item.classList.add('active');
+		});
+	});
+}
+
+const setFancybox = () => {
+	Fancybox.bind('[data-fancybox]', {
+
+		loop: true,
+		Images: {
+			zoom: true,
+		},
 	});
 }
 
@@ -208,5 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	initFileLoaders();
 	setGsap();
 	setSmoothScroll();
-
+	setSwipers();
+	setAdvantagesSection();
+	setStagesSection();
+	setFancybox();
 })

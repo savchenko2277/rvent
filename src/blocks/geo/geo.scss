@@ -1,0 +1,134 @@
+@use 'lib' as *;
+
+.geo {
+	$self: &;
+
+	overflow: hidden;
+	position: relative;
+	padding-top: fluid(150px, 80px);
+	padding-bottom: 280px;
+
+	@include media("<=xs") {
+		padding-bottom: 777px;
+	}
+
+	&__container {
+		position: relative;
+		z-index: 2;
+	}
+
+	&__top {
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+		justify-content: space-between;
+		margin-bottom: fluid(60px, 40px);
+
+		@include media("<=xs") {
+			grid-template-columns: 100%;
+			gap: 30px;
+		}
+	}
+
+	&__title {
+		font-weight: 700;
+		font-size: fluid(30px, 20px);
+		max-width: 1024px;
+		letter-spacing: 2px;
+		line-height: 140%;
+
+		span {
+			padding-left: 20%;
+		}
+	}
+
+	&__desc {
+		display: flex;
+		flex-direction: column;
+		text-align: right;
+		color: #A3A1A1;
+
+		@include media("<=xs") {
+			order: -1;
+			text-align: start;
+		}
+	}
+
+	&__about {
+		display: flex;
+		flex-direction: column;
+		gap: 60px;
+		padding-left: 115px;
+		
+		@include media("<=xs") {
+			padding-left: 0;
+		}
+	}
+
+	&__text {
+		max-width: 327px;
+		line-height: 140%;
+
+		@include media("<=xs") {
+			max-width: 100%;
+		}
+	}
+
+	&__button {
+		span {
+			min-width: 200px;
+		}
+	}
+
+	&__map {
+		position: absolute;
+		top: 0px;
+		left: fluid(246px, 0px);
+
+		@include media("<=xs") {
+			top: 43%;
+			left: -100%;
+		}
+	}
+
+	&__map-img {
+		width: fluid(3220px, 2000px);
+		max-width: max-content;
+		height: auto;
+		object-fit: contain;
+		opacity: 0.4;
+
+		@include media("<=xs") {
+			width: 2424px;
+		}
+	}
+
+	&__point {
+		position: absolute;
+		top: 17.5%;
+		left: 20.5%;
+		z-index: 2;
+
+		@include media("<=xs") {
+			top: 16%;
+		}
+	}
+
+	&__point-img {
+		width: 120px;
+		height: 120px;
+		object-fit: contain;
+	}
+
+	&__point-text {
+		position: absolute;
+		bottom: 20px;
+		left: 0;
+		font-size: 12px;
+		font-family: "STAPEL";
+		color: #292F4F;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		font-weight: 700;
+	}
+
+}

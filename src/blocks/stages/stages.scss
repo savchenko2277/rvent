@@ -1,0 +1,180 @@
+@use 'lib' as *;
+
+.stages {
+	$self: &;
+
+	padding: fluid(150px, 80px) 0;
+	background: #292F4F;
+	color: $lightText;
+	overflow: hidden;
+
+	&__top.container {
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+		justify-content: space-between;
+		margin-bottom: fluid(100px, 60px);
+		gap: 30px;
+
+		@include media("<=xs") {
+			grid-template-columns: 100%;
+		}
+	}
+
+	&__desc {
+		color: #A3A1A1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__info {
+		max-width: 906px;
+		margin-right: 120px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		@include media("<=xs") {
+			margin-right: 0;
+		}
+	}
+
+	&__title {
+		font-size: fluid(30px, 20px);
+		font-weight: 700;
+		margin-bottom: fluid(60px, 40px);
+		letter-spacing: 2px;
+
+		span {
+			padding-left: 25%;
+		}
+	}
+
+	&__about {
+		max-width: 442px;
+
+		@include media("<=xs") {
+			max-width: 100%;
+		}
+	}
+
+	&__text {
+		margin-bottom: 60px;
+		line-height: 140%;
+	}
+
+	&__button {}
+
+	&__images {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		width: calc(100% + 8%);
+		margin-left: -4%;
+		margin-bottom: 80px;
+
+		img {
+			width: 100%;
+			height: auto;
+			aspect-ratio: 523 / 400;
+			object-fit: cover;
+
+			@include media("<=xs") {
+				aspect-ratio: 124 / 88;
+			}
+		}
+
+		@include media("<=xs") {
+			width: calc(100% + 40%);
+			margin-left: -20%;
+		}
+	}
+
+	&__accordeons {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+	}
+
+	&__accordeon {
+		display: grid;
+		grid-template-columns: fluid(350px, 160px) 1fr;
+		padding-bottom: 40px;
+		border-bottom: 1px solid #FFFFFF66;
+		gap: 40px;
+		cursor: pointer;
+
+		&.active {
+			#{$self}__accordeon-title {
+				&::after {
+					transform: rotate(90deg);
+				}
+
+				@include media("<=xs") {
+					margin-bottom: 40px;
+				}
+			}
+
+			#{$self}__accordeon-content {
+				grid-template-rows: max-content 1fr;
+			}
+		}
+
+		@include media("<=xs") {
+			grid-template-columns: 100%;
+
+		}
+	}
+
+	&__accordeon-num {
+		font-size: fluid(100px, 70px);
+		font-family: "STAPEL";
+		color: #FFFFFF66;
+		line-height: 80%;
+
+		span {
+			font-size: fluid(90px, 60px);
+		}
+	}
+
+	&__accordeon-content {
+		display: grid;
+		grid-template-rows: max-content 0fr;
+		transition: all $transition;
+	}
+
+	&__accordeon-title {
+		font-family: "STAPEL";
+		text-transform: uppercase;
+		font-size: fluid(20px, 14px);
+		transition: all $transition;
+		padding-top: 30px;
+		display: flex;
+		flex-direction: row;
+		align-items: start;
+		justify-content: space-between;
+		margin-bottom: 30px;
+		gap: 20px;
+		line-height: 140%;
+
+		&::after {
+			content: '';
+			display: block;
+			width: 20px;
+			height: 20px;
+			background: url("../img/icons/arrow-tr-light.svg") no-repeat center / contain;
+			transition: all $transition;
+			flex: 0 0 auto;
+		}
+
+		@include media("<=xs") {
+			padding-top: 0;
+			margin-bottom: 0;
+		}
+	}
+
+	&__accordeon-text {
+		overflow: hidden;
+		line-height: 140%;
+		max-width: 788px;
+	}
+
+}

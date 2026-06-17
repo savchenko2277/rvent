@@ -33,3 +33,5 @@
  * Subject to the terms at https://gsap.com/standard-license
  * @author: Jack Doyle, jack@greensock.com
 */
+
+/*! License details at fancyapps.com/license */

@@ -1,0 +1,103 @@
+@use 'lib' as *;
+
+.certificates {
+	$self: &;
+
+	padding: fluid(150px, 80px) 0;
+	overflow: hidden;
+	position: relative;
+
+	&__logo {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		img {
+			width: fluid(560px, 390px);
+			object-fit: contain;
+		}
+
+		@include media("<=xs") {
+			left: auto;
+			right: 0;
+			transform: translate(25%, -50%);
+		}
+	}
+
+	&__container {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		z-index: 1;
+	}
+
+	&__top {
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+		justify-content: space-between;
+		margin-bottom: fluid(60px, 40px);
+		gap: 30px;
+
+		@include media("<=xs") {
+			grid-template-columns: 100%;
+		}
+	}
+
+	&__desc {
+		font-weight: 500;
+		color: #A3A1A1;
+	}
+
+	&__title {
+		max-width: 1022px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		font-size: fluid(30px, 20px);
+
+		span {
+			padding-left: 20%;
+		}
+	}
+
+	&__about {
+		margin-left: auto;
+		padding-right: 20px;
+		display: flex;
+		flex-direction: row;
+		align-items: end;
+		gap: 60px;
+		margin-bottom: fluid(100px, 60px);
+
+		@include media("<=xs") {
+			flex-direction: column;
+			align-items: start;
+			margin-left: 0;
+		}
+	}
+
+	&__text {
+		max-width: 442px;
+		line-height: 140%;
+
+		@include media("<=xs") {
+			max-width: 100%;
+		}
+	}
+
+	&__swiper.swiper {
+		overflow: visible;
+		max-width: 100%;
+	}
+
+	&__slide {
+		aspect-ratio: 279 / 391;
+		cursor: pointer;
+
+		img {
+			width: 100%;
+			object-fit: contain;
+		}
+	}
+
+}

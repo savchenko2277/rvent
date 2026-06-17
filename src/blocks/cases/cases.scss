@@ -42,7 +42,7 @@
 	&__items {
 		position: relative;
 		// Правильная запись формулы:
-min-height: calc(100vh + (var(--cards-count) - 1) * 50px);
+		min-height: calc(100vh + (var(--cards-count) - 1) * 50px);
 	}
 
 	&__item {
