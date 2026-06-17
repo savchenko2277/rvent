@@ -224,17 +224,20 @@ const setGsap = () => {
 const setSmoothScroll = () => {
     gsap.registerPlugin(ScrollSmoother);
 
-    ScrollSmoother.create({
-        wrapper: '.wrapper',
-        content: '.content',
-        smooth: 2,
-        effects: true,
-        ignoreMobileResize: true,
-        preventDefault: true, 
-        normalizeScroll: true, // Вернули, так как он спасает пины
-        smoothTouch: 0.1, // <-- ИЗМЕНЕНИЕ: Минимальное сглаживание тача для синхронизации кадров на 120 Гц
-        smoothSpline: true,
-    });
+    // Надежная проверка на мобильные устройства и планшеты
+    const isTouchDevice = window.matchMedia("(max-width: 1024px)").matches || ScrollTrigger.isTouch;
+
+    // Инициализируем ScrollSmoother ТОЛЬКО на десктопе
+    if (!isTouchDevice) {
+        ScrollSmoother.create({
+            wrapper: '.wrapper',
+            content: '.content',
+            smooth: 2,
+            effects: true,
+            normalizeScroll: false, // На ПК обычно работает отлично и без этого
+            smoothTouch: false
+        });
+    }
 }
 
 const setAdvantagesSection = () => {
