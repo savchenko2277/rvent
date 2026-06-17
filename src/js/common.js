@@ -146,21 +146,26 @@ const initFileLoaders = () => {
 const setGsap = () => {
     gsap.registerPlugin(ScrollTrigger);
 
+    // Предотвращаем рывки интерфейса при появлении/исчезновении нижней панели Safari
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
     const header = document.querySelector('.header');
     const counters = document.querySelectorAll(".counter-animated");
 
     ScrollTrigger.create({
-        trigger: ".cases__items",
-        start: "top top",
-        end: "bottom top",
-        onEnter: () => header.classList.add('header_hidden'),
-        onLeave: () => header.classList.remove('header_hidden'),
-        onEnterBack: () => header.classList.add('header_hidden'),
-        onLeaveBack: () => header.classList.remove('header_hidden')
+        trigger: ".cases__items", 
+        start: "top top",  
+        end: "bottom top", 
+
+        onEnter: () => header.classList.add('header_hidden'),     
+        onLeave: () => header.classList.remove('header_hidden'),  
+        onEnterBack: () => header.classList.add('header_hidden'), 
+        onLeaveBack: () => header.classList.remove('header_hidden') 
     });
 
-    // ОПТИМИЗАЦИЯ: Вынесли поиск и установку переменной из цикла
     const cards = gsap.utils.toArray(".cases__item");
+    
+    // Оптимизация: устанавливаем переменную один раз
     if (cards.length > 0) {
         document.documentElement.style.setProperty('--cards-count', cards.length);
     }
@@ -173,13 +178,18 @@ const setGsap = () => {
             end: "bottom bottom",
             pin: true,
             pinSpacing: false,
-            onEnter: () => card.classList.add("cases__item_active"),
-            onLeaveBack: () => card.classList.remove("cases__item_active")
+            anticipatePin: 1, // Сглаживает старт прилипания карточки на iOS (убирает дерганье)
+            onEnter: () => {
+                card.classList.add("cases__item_active");
+            },
+            onLeaveBack: () => {
+                card.classList.remove("cases__item_active");
+            }
         });
     });
 
     counters.forEach((counter) => {
-        // ОПТИМИЗАЦИЯ: textContent вместо innerText
+        // textContent работает быстрее, чем innerText (не вызывает reflow)
         const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.textContent);
         const val = { score: 0 };
 
@@ -193,7 +203,6 @@ const setGsap = () => {
                 toggleActions: "play none none none"
             },
             onUpdate: () => {
-                // ОПТИМИЗАЦИЯ: textContent не вызывает reflow
                 counter.textContent = Math.floor(val.score);
             }
         });
@@ -204,42 +213,40 @@ const setGsap = () => {
             trigger: ".promo",
             start: "bottom 100%",
             end: "bottom 10%",
-            scrub: true // Убрали scrub: 1, чтобы скролл был более жестко привязан к нативному на iOS
+            scrub: 0.8 // Числовое значение дает инерцию анимации, маскируя рывки на 120 Гц
         },
         scale: 1.5,
-        willChange: "transform" // Подсказка браузеру вынести на GPU
+        force3D: true, // Отправляем анимацию на GPU
+        willChange: "transform"
     });
 
-    // ОПТИМИЗАЦИЯ: Заменили aspectRatio на clip-path или scaleY (Зависит от вашей верстки)
-    // Если нужно просто обрезать картинку, используйте clip-path. 
-    // Предполагается, что изначально картинка полноразмерная.
     gsap.to(".company__photo_animated img", {
         scrollTrigger: {
             trigger: ".company__columns",
             start: "top 65%",
             end: "top 20%",
-            scrub: true
+            scrub: 0.8 // Инерция для сглаживания
         },
-        // Пример анимации обрезки сверху и снизу (имитация смены соотношения сторон)
-        clipPath: "inset(15% 0% 15% 0%)", 
-        willChange: "clip-path" // Подсказка для GPU
+        aspectRatio: 10 / 16 // Вернул ваш оригинальный вариант
     });
 }
 
 const setSmoothScroll = () => {
     gsap.registerPlugin(ScrollSmoother);
 
-    // Проверяем, мобильное ли устройство (простой способ)
+    // Проверяем мобильное устройство
     const isMobile = window.matchMedia("(max-width: 768px)").matches || ScrollTrigger.isTouch;
 
     ScrollSmoother.create({
         wrapper: '.wrapper',
         content: '.content',
-        smooth: isMobile ? 0 : 2,
+        smooth: isMobile ? 0 : 2, // Отключаем смузер на мобилках для плавного нативного скролла
         effects: true,
         ignoreMobileResize: true,
-        normalizeScroll: !isMobile, 
+        preventDefault: false, // На iOS должно быть false
+        normalizeScroll: !isMobile, // Отключаем нормализацию на мобилках (главная причина лагов)
         smoothTouch: false,
+        smoothSpline: true,
     });
 }
 
