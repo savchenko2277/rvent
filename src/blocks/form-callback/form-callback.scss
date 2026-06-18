@@ -6,6 +6,19 @@
 	display: flex;
 	flex-direction: column;
 
+	&_modal {
+		#{$self}__input {
+			color: $darkText;
+		}
+		#{$self}__file {
+			color: $darkText;
+
+			&.active {
+				color: $darkText;
+			}
+		}
+	}
+
 	&__labels {
 		display: flex;
 		flex-direction: column;

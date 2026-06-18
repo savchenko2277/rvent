@@ -598,6 +598,47 @@
 
     </main>
 
+<div class="modal modal_callback" id="callback-modal">
+    <div class="modal__container">
+        <div class="modal__close"></div> 
+        <div class="modal__content">
+            <h2 class="modal__title title">Оставьте заявку</h2>
+            <form action="#" class="form-callback form-callback_modal">
+                <div class="form-callback__labels">
+                    <label class="form-callback__label">
+                        <input placeholder="Название ИП" type="text" class="form-callback__input">
+                    </label>
+                    <label class="form-callback__label">
+                        <input placeholder="+7 (000) 000-00-00" type="text" class="form-callback__input">
+                    </label>
+                    <label class="form-callback__label">
+                        <input placeholder="E-mail" type="text" class="form-callback__input">
+                    </label>
+                    <label class="form-callback__label form-callback__file js-file-wrapper">
+                        <input type="file" class="js-file-input" accept=".pdf, .doc, .docx, .jpg, .jpeg, .png" hidden>
+                        <span class="js-file-name">Загрузить файл</span>
+                        <button type="button" class="form-callback__file-button js-file-btn">
+                            <img src="./img/icons/upload.svg" alt="">
+                        </button>
+                        <button type="button" class="form-callback__delete js-file-delete">
+                            <img src="./img/icons/close.svg" alt="">
+                        </button>
+                    </label>
+                    <label class="form-callback__label">
+                        <textarea placeholder="Краткое описание объекта" type="text" class="form-callback__input"></textarea>
+                    </label>
+                </div>
+                <button type="submit" class="form-callback__button button button_blue button_blue-stroke">
+                    <span>Отправить запрос</span>
+                </button>
+                <p class="form-callback__agree">
+                    Продолжая, вы даете свое согласие на <a href="#">обработку Ваших персональных данных</a> и принимаете условия <a href="#">Пользовательского соглашения.</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
 @@include("_sprite.svg")
 <svg width="0" height="0">
         <defs>

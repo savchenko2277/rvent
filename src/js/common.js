@@ -57,273 +57,353 @@ const scrollController = {
 	}
 };
 
+// Функция открытия модалки
+const openModal = (modalId) => {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    modal.classList.add('active');
+    
+    scrollController.disable()
+};
+
+// Функция закрытия конкретной модалки
+const closeModal = (modal) => {
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    
+    scrollController.enable();
+};
+
+// Функция инициализации всех событий
+const initModals = () => {
+    const openButtons = document.querySelectorAll('[data-modal-open]');
+    const closeButtons = document.querySelectorAll('.modal__close');
+    const modals = document.querySelectorAll('.modal');
+
+    // 1. Открытие по клику на кнопку
+    openButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault(); // На случай, если кнопка — это ссылка <a>
+            const modalId = btn.getAttribute('data-modal-open');
+            openModal(modalId);
+        });
+    });
+
+    // 2. Закрытие по клику на крестик
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modal'); // Находим родительскую модалку
+            closeModal(modal);
+        });
+    });
+
+    // 3. Закрытие по клику на оверлей (вне области modal__container)
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            // Если клик пришелся ровно на сам фон (.modal), а не на его детей
+            if (e.target === modal) {
+                closeModal(modal);
+            }
+        });
+    });
+
+    // 4. Закрытие по клавише Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const activeModal = document.querySelector('.modal.active');
+            if (activeModal) {
+                closeModal(activeModal);
+            }
+        }
+    });
+};
+
 // Ширина скроллбара
 const setScrollbarWidth = () => {
 	document.documentElement.style.setProperty('--sw', `${window.innerWidth - document.documentElement.clientWidth}px`);
 }
 
 const setHeader = () => {
-	const header = document.querySelector('header');
-	if (!header) return;
+    const header = document.querySelector('header');
+    if (!header) return;
 
-	// --- Логика добавления класса по скроллу ---
-	const handleScroll = () => {
-		if (window.scrollY > 5) {
-			header.classList.add('header_light');
-		} else {
-			header.classList.remove('header_light');
-		}
-	};
+    const handleScroll = () => {
+        if (window.scrollY > 5) {
+            header.classList.add('header_light');
+        } else {
+            header.classList.remove('header_light');
+        }
+    };
 
-	// Слушаем событие прокрутки
-	window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
 
-	// Вызываем один раз сразу, на случай если страница загрузилась с прокруткой
-	handleScroll();
-	// -------------------------------------------
+    const burger = header.querySelector('.header__burger');
+    const items = header.querySelectorAll('.header__item');
 
-	const burger = header.querySelector('.header__burger');
-	const items = header.querySelectorAll('.header__item');
+    if (burger) {
+        burger.addEventListener('click', () => {
+            header.classList.toggle('header_open');
 
-	burger.addEventListener('click', () => {
-		header.classList.toggle('header_open');
-
-		if (header.classList.contains('header_open')) {
-			scrollController.disable();
-		} else {
-			scrollController.enable();
-		}
-	});
-
-	items.forEach(item => {
-		item.addEventListener('click', (e) => {
-			if (window.innerWidth <= 1100) {
-				items.forEach(otherItem => {
-					if (otherItem !== item) otherItem.classList.remove('_active');
-				});
-				item.classList.toggle('_active');
-			}
-		});
-	});
-};
-
-const initFileLoaders = () => {
-	const wrappers = document.querySelectorAll('.js-file-wrapper');
-
-	wrappers.forEach(wrapper => {
-		const input = wrapper.querySelector('.js-file-input');
-		const fileName = wrapper.querySelector('.js-file-name');
-		const btn = wrapper.querySelector('.js-file-btn');
-		const deleteBtn = wrapper.querySelector('.js-file-delete');
-
-		const originalText = fileName.textContent;
-
-		// Клик по кнопке вызывает клик по скрытому инпуту
-		btn.addEventListener('click', () => input.click());
-
-		// При выборе файла
-		input.addEventListener('change', function () {
-			if (this.files.length > 0) {
-				fileName.textContent = this.files[0].name;
-				deleteBtn.style.display = 'block';
-				btn.style.display = 'none';
-				wrapper.classList.add('active');
-			}
-		});
-
-		// Удаление
-		deleteBtn.addEventListener('click', (e) => {
-			e.preventDefault();
-			input.value = '';
-			fileName.textContent = originalText;
-			deleteBtn.style.display = 'none';
-			btn.style.display = 'block';
-			wrapper.classList.remove('active');
-		});
-	});
-}
-
-const setGsap = () => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const header = document.querySelector('.header');
-    const counters = document.querySelectorAll(".counter-animated");
-
-    ScrollTrigger.create({
-        trigger: ".cases__items",
-        start: "top top",
-        end: "bottom top",
-        onEnter: () => header.classList.add('header_hidden'),
-        onLeave: () => header.classList.remove('header_hidden'),
-        onEnterBack: () => header.classList.add('header_hidden'),
-        onLeaveBack: () => header.classList.remove('header_hidden')
-    });
-
-    // Оставил оптимизацию: ищем карточки только один раз
-    const cards = gsap.utils.toArray(".cases__item");
-    if (cards.length > 0) {
-        document.documentElement.style.setProperty('--cards-count', cards.length);
+            if (header.classList.contains('header_open')) {
+                scrollController.disable(); 
+            } else {
+                scrollController.enable();
+            }
+        });
     }
 
-    cards.forEach((card, i) => {
-        ScrollTrigger.create({
-            trigger: card,
-            start: `top top+=${0 + (i * 50)}px`,
-            endTrigger: ".cases__items",
-            end: "bottom bottom",
-            pin: true,
-            pinSpacing: false,
-            onEnter: () => card.classList.add("cases__item_active"),
-            onLeaveBack: () => card.classList.remove("cases__item_active")
-        });
-    });
+    items.forEach(item => {
+        item.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
 
-    counters.forEach((counter) => {
-        const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.textContent);
-        const val = { score: 0 };
-
-        gsap.to(val, {
-            score: target,
-            duration: 3,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: counter,
-                start: "top 90%",
-                toggleActions: "play none none none"
-            },
-            onUpdate: () => {
-                counter.textContent = Math.floor(val.score);
+            if (link) {
+                header.classList.remove('header_open');
+                items.forEach(i => i.classList.remove('_active')); 
+                scrollController.enable();
+            } else {
+                if (window.innerWidth <= 1100) {
+                    items.forEach(otherItem => {
+                        if (otherItem !== item) otherItem.classList.remove('_active');
+                    });
+                    item.classList.toggle('_active');
+                }
             }
         });
     });
+};
 
-    gsap.to(".promo__bg img", {
-        scrollTrigger: {
-            trigger: ".promo",
-            start: "bottom 100%",
-            end: "bottom 10%",
-            scrub: 1 // Вернул вашу единицу
-        },
-        scale: 1.5,
-        force3D: true, // Аппаратное ускорение для GPU
-        willChange: "transform"
-    });
+const initFileLoaders = () => {
+    const wrappers = document.querySelectorAll('.js-file-wrapper');
 
-    gsap.to(".company__photo_animated img", {
-        scrollTrigger: {
-            trigger: ".company__columns",
-            start: "top 65%",
-            end: "top 20%",
-            scrub: 1 // Вернул вашу единицу
-        },
-        aspectRatio: 10 / 16, // Оставил ваш изначальный вариант
-        force3D: true // Аппаратное ускорение
+    wrappers.forEach(wrapper => {
+        const input = wrapper.querySelector('.js-file-input');
+        const fileName = wrapper.querySelector('.js-file-name');
+        const btn = wrapper.querySelector('.js-file-btn');
+        const deleteBtn = wrapper.querySelector('.js-file-delete');
+
+        const originalText = fileName.textContent;
+
+        // Настройки ограничений
+        const allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
+        const maxSizeInMB = 5; 
+        const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
+        // Клик по кнопке вызывает клик по скрытому инпуту
+        btn.addEventListener('click', () => input.click());
+
+        // При выборе файла
+        input.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                // 1. Проверка формата
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert(`Неверный формат файла. Разрешены: ${allowedExtensions.join(', ').toUpperCase()}`);
+                    this.value = ''; // Сбрасываем выбранный файл
+                    return;
+                }
+
+                // 2. Проверка размера файла
+                if (file.size > maxSizeInBytes) {
+                    alert(`Размер файла слишком большой. Максимум: ${maxSizeInMB} МБ`);
+                    this.value = ''; // Сбрасываем выбранный файл
+                    return;
+                }
+
+                // Если проверки пройдены, обновляем интерфейс
+                fileName.textContent = file.name;
+                deleteBtn.style.display = 'block';
+                btn.style.display = 'none';
+                wrapper.classList.add('active');
+            }
+        });
+
+        // Удаление
+        deleteBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            input.value = '';
+            fileName.textContent = originalText;
+            deleteBtn.style.display = 'none';
+            btn.style.display = 'block';
+            wrapper.classList.remove('active');
+        });
     });
+}
+
+const setGsap = () => {
+	gsap.registerPlugin(ScrollTrigger);
+
+	const header = document.querySelector('.header');
+	const counters = document.querySelectorAll(".counter-animated");
+
+	ScrollTrigger.create({
+		trigger: ".cases__items",
+		start: "top top",
+		end: "bottom top",
+		onEnter: () => header.classList.add('header_hidden'),
+		onLeave: () => header.classList.remove('header_hidden'),
+		onEnterBack: () => header.classList.add('header_hidden'),
+		onLeaveBack: () => header.classList.remove('header_hidden')
+	});
+
+	// Оставил оптимизацию: ищем карточки только один раз
+	const cards = gsap.utils.toArray(".cases__item");
+	if (cards.length > 0) {
+		document.documentElement.style.setProperty('--cards-count', cards.length);
+	}
+
+	cards.forEach((card, i) => {
+		ScrollTrigger.create({
+			trigger: card,
+			start: `top top+=${0 + (i * 50)}px`,
+			endTrigger: ".cases__items",
+			end: "bottom bottom",
+			pin: true,
+			pinSpacing: false,
+			onEnter: () => card.classList.add("cases__item_active"),
+			onLeaveBack: () => card.classList.remove("cases__item_active")
+		});
+	});
+
+	counters.forEach((counter) => {
+		const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.textContent);
+		const val = { score: 0 };
+
+		gsap.to(val, {
+			score: target,
+			duration: 3,
+			ease: "power2.out",
+			scrollTrigger: {
+				trigger: counter,
+				start: "top 90%",
+				toggleActions: "play none none none"
+			},
+			onUpdate: () => {
+				counter.textContent = Math.floor(val.score);
+			}
+		});
+	});
+
+	gsap.to(".promo__bg img", {
+		scrollTrigger: {
+			trigger: ".promo",
+			start: "bottom 100%",
+			end: "bottom 10%",
+			scrub: 1 // Вернул вашу единицу
+		},
+		scale: 1.5,
+		force3D: true, // Аппаратное ускорение для GPU
+		willChange: "transform"
+	});
+
+	gsap.to(".company__photo_animated img", {
+		scrollTrigger: {
+			trigger: ".company__columns",
+			start: "top 65%",
+			end: "top 20%",
+			scrub: 1 // Вернул вашу единицу
+		},
+		aspectRatio: 10 / 16, // Оставил ваш изначальный вариант
+		force3D: true // Аппаратное ускорение
+	});
 }
 
 const setSmoothScroll = () => {
-    gsap.registerPlugin(ScrollSmoother);
+	gsap.registerPlugin(ScrollSmoother);
 
-    // Надежная проверка на мобильные устройства и планшеты
-    const isTouchDevice = window.matchMedia("(max-width: 1024px)").matches || ScrollTrigger.isTouch;
+	// Надежная проверка на мобильные устройства и планшеты
+	const isTouchDevice = window.matchMedia("(max-width: 1024px)").matches || ScrollTrigger.isTouch;
 
-    // Инициализируем ScrollSmoother ТОЛЬКО на десктопе
-    if (!isTouchDevice) {
-        ScrollSmoother.create({
-            wrapper: '.wrapper',
-            content: '.content',
-            smooth: 2,
-            effects: true,
-            normalizeScroll: false, // На ПК обычно работает отлично и без этого
-            smoothTouch: false
-        });
-    }
+	// Инициализируем ScrollSmoother ТОЛЬКО на десктопе
+	if (!isTouchDevice) {
+		ScrollSmoother.create({
+			wrapper: '.wrapper',
+			content: '.content',
+			smooth: 2,
+			effects: true,
+			normalizeScroll: false, // На ПК обычно работает отлично и без этого
+			smoothTouch: false
+		});
+	}
 }
 
 const setAdvantagesSection = () => {
-	const advantages = document.querySelector('.advantages');
-	const titlesEl = document.querySelector('.advantages__titles');
-	if (!advantages || !titlesEl) return;
+    const advantages = document.querySelector('.advantages');
+    const titlesEl = document.querySelector('.advantages__titles');
+    if (!advantages || !titlesEl) return;
 
-	// 1. Инициализация инстансов
-	const swiperTitles = new Swiper('.advantages__titles', {
-		modules: [Controller],
-		direction: 'vertical',
-		slidesPerView: 'auto',
-		spaceBetween: 20,
-		centeredSlides: true,
-		initialSlide: 2,
-		grabCursor: true
-	});
+    // 1. Инициализация инстансов
+    const swiperTitles = new Swiper('.advantages__titles', {
+        modules: [Controller], 
+        direction: 'vertical',
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        centeredSlides: true,
+        initialSlide: 2,
+        grabCursor: true,
+        slideToClickedSlide: true // РЕШЕНИЕ 1: Делает слайды кликабельными
+    });
 
-	const swiperInfo = new Swiper('.advantages__info', {
-		modules: [Controller, EffectFade],
-		slidesPerView: 1,
-		initialSlide: 2,
-		spaceBetween: 40,
-		allowTouchMove: true,
-		effect: 'fade',
-		fadeEffect: { crossFade: true },
-		breakpoints: {
-			0: { slidesPerView: 1.25, effect: 'slide', spaceBetween: 40 },
-			641: { slidesPerView: 1, effect: 'fade', spaceBetween: 0 }
-		}
-	});
+    const swiperInfo = new Swiper('.advantages__info', {
+        modules: [Controller, EffectFade],
+        initialSlide: 2,
+        allowTouchMove: true,
+        fadeEffect: { crossFade: true },
+        // РЕШЕНИЕ 2: Оставляем смену эффектов на откуп встроенным breakpoints. 
+        // Swiper (если версия >= 9.3) сам корректно перестроит эффекты и стили.
+        breakpoints: {
+            0: { slidesPerView: 1.25, effect: 'slide', spaceBetween: 40 },
+            641: { slidesPerView: 1, effect: 'fade', spaceBetween: 0 }
+        }
+    });
 
-	const swiperImages = new Swiper('.advantages__images', {
-		modules: [EffectFade],
-		slidesPerView: 1,
-		initialSlide: 2,
-		spaceBetween: 20,
-		allowTouchMove: false,
-		effect: 'fade',
-		fadeEffect: { crossFade: true }
-	});
+    const swiperImages = new Swiper('.advantages__images', {
+        modules: [EffectFade],
+        slidesPerView: 1,
+        initialSlide: 2,
+        spaceBetween: 20,
+        allowTouchMove: false,
+        effect: 'fade',
+        fadeEffect: { crossFade: true }
+    });
 
-	// 2. Обработчик синхронизации
-	const updateLogic = () => {
-		const isMobile = window.innerWidth <= 640;
+    // 2. Обработчик синхронизации
+    const updateLogic = () => {
+        const isMobile = window.innerWidth <= 640;
 
-		if (isMobile) {
-			titlesEl.style.display = 'none';
+        if (isMobile) {
+            titlesEl.style.display = 'none';
 
-			// 1. Принудительно меняем параметры
-			swiperInfo.params.effect = 'slide';
-			swiperInfo.params.slidesPerView = 1.25;
+            // РАЗВЯЗЫВАЕМ СВАЙПЕРЫ: отключаем скрытый swiperTitles, чтобы он не "душил" остальные
+            if (swiperTitles.controller) {
+                swiperTitles.controller.control = [];
+            }
 
-			// 2. Очищаем стили фейда, которые Swiper мог оставить на слайдах
-			swiperInfo.slides.forEach(slide => {
-				slide.style.opacity = '';
-				slide.style.visibility = '';
-				slide.style.position = '';
-				slide.style.zIndex = '';
-			});
+            // Прямая синхронизация Info -> Images для мобилки
+            swiperInfo.on('slideChange', function() {
+                swiperImages.slideTo(this.activeIndex);
+            });
 
-			// 3. Синхронизация
-			swiperInfo.off('slideChange');
-			swiperInfo.on('slideChange', () => {
-				swiperImages.slideTo(swiperInfo.activeIndex);
-			});
+        } else {
+            titlesEl.style.display = 'block';
 
-			// 4. ГЛАВНОЕ: принудительный апдейт
-			swiperInfo.update();
-		} else {
-			titlesEl.style.display = 'block';
+            // Убираем ручной лисенер, чтобы не плодить дубликаты событий при ресайзе
+            swiperInfo.off('slideChange');
 
-			// Возвращаем настройки фейда
-			swiperInfo.params.effect = 'fade';
-			swiperInfo.params.slidesPerView = 1;
+            // ВОЗВРАЩАЕМ СВЯЗКУ: снова отдаем управление видимому swiperTitles
+            if (swiperTitles.controller) {
+                swiperTitles.controller.control = [swiperInfo, swiperImages];
+            }
+        }
+    };
 
-			swiperTitles.update();
-			swiperTitles.controller.control = [swiperInfo, swiperImages];
-
-			swiperInfo.update();
-		}
-	};
-
-	// Слушаем ресайз
-	window.addEventListener('resize', updateLogic);
-	updateLogic();
+    // Слушаем ресайз
+    window.addEventListener('resize', updateLogic);
+    updateLogic();
 };
 
 const setStagesSection = () => {
@@ -363,4 +443,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	setAdvantagesSection();
 	setStagesSection();
 	setFancybox();
+	initModals();
 })
