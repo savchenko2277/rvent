@@ -11,50 +11,50 @@ import { Fancybox } from '@fancyapps/ui';
 // Функции
 
 const setSwipers = () => {
-	const servicesSwiper = new Swiper('.services__swiper', {
-		slidesPerView: 1.1,
-		spaceBetween: 10,
-		breakpoints: {
-			960: {
-				slidesPerView: 2.5,
-				spaceBetween: 20
-			},
-		}
-	});
+    const servicesSwiper = new Swiper('.services__swiper', {
+        slidesPerView: 1.1,
+        spaceBetween: 10,
+        breakpoints: {
+            960: {
+                slidesPerView: 2.5,
+                spaceBetween: 20
+            },
+        }
+    });
 
-	const certificatesSwiper = new Swiper('.certificates__swiper', {
-		slidesPerView: 1.15,
-		spaceBetween: 10,
-		breakpoints: {
-			960: {
-				slidesPerView: 4.5,
-				spaceBetween: 20
-			},
-			1440: {
-				slidesPerView: 5,
-			}
-		}
-	});
+    const certificatesSwiper = new Swiper('.certificates__swiper', {
+        slidesPerView: 1.15,
+        spaceBetween: 10,
+        breakpoints: {
+            960: {
+                slidesPerView: 4.5,
+                spaceBetween: 20
+            },
+            1440: {
+                slidesPerView: 5,
+            }
+        }
+    });
 }
 
 const scrollController = {
-	disable() {
-		// 1. Останавливаем движок скролла GSAP
-		if (ScrollSmoother.get()) {
-			ScrollSmoother.get().paused(true);
-		}
-		// 2. Дополнительно скрываем скроллбар, если нужно
-		document.body.style.overflow = 'hidden';
-	},
+    disable() {
+        // 1. Останавливаем движок скролла GSAP
+        if (ScrollSmoother.get()) {
+            ScrollSmoother.get().paused(true);
+        }
+        // 2. Дополнительно скрываем скроллбар, если нужно
+        document.body.style.overflow = 'hidden';
+    },
 
-	enable() {
-		// 1. Включаем движок обратно
-		if (ScrollSmoother.get()) {
-			ScrollSmoother.get().paused(false);
-		}
-		// 2. Возвращаем скроллбар
-		document.body.style.removeProperty('overflow');
-	}
+    enable() {
+        // 1. Включаем движок обратно
+        if (ScrollSmoother.get()) {
+            ScrollSmoother.get().paused(false);
+        }
+        // 2. Возвращаем скроллбар
+        document.body.style.removeProperty('overflow');
+    }
 };
 
 // Функция открытия модалки
@@ -63,7 +63,7 @@ const openModal = (modalId) => {
     if (!modal) return;
 
     modal.classList.add('active');
-    
+
     scrollController.disable()
 };
 
@@ -72,7 +72,7 @@ const closeModal = (modal) => {
     if (!modal) return;
 
     modal.classList.remove('active');
-    
+
     scrollController.enable();
 };
 
@@ -122,7 +122,7 @@ const initModals = () => {
 
 // Ширина скроллбара
 const setScrollbarWidth = () => {
-	document.documentElement.style.setProperty('--sw', `${window.innerWidth - document.documentElement.clientWidth}px`);
+    document.documentElement.style.setProperty('--sw', `${window.innerWidth - document.documentElement.clientWidth}px`);
 }
 
 const setHeader = () => {
@@ -148,28 +148,27 @@ const setHeader = () => {
             header.classList.toggle('header_open');
 
             if (header.classList.contains('header_open')) {
-                scrollController.disable(); 
+                scrollController.disable();
             } else {
                 scrollController.enable();
             }
         });
     }
 
+    // Кусок из твоего setHeader
     items.forEach(item => {
         item.addEventListener('click', (e) => {
             const link = e.target.closest('a');
 
             if (link) {
-                header.classList.remove('header_open');
-                items.forEach(i => i.classList.remove('_active')); 
-                scrollController.enable();
-            } else {
-                if (window.innerWidth <= 1100) {
-                    items.forEach(otherItem => {
-                        if (otherItem !== item) otherItem.classList.remove('_active');
-                    });
-                    item.classList.toggle('_active');
+                // Если ссылка якорная, отменяем стандартный прыжок
+                if (link.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
                 }
+
+                header.classList.remove('header_open');
+                items.forEach(i => i.classList.remove('_active'));
+                scrollController.enable();
             }
         });
     });
@@ -188,7 +187,7 @@ const initFileLoaders = () => {
 
         // Настройки ограничений
         const allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
-        const maxSizeInMB = 5; 
+        const maxSizeInMB = 5;
         const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
 
         // Клик по кнопке вызывает клик по скрытому инпуту
@@ -235,102 +234,143 @@ const initFileLoaders = () => {
 }
 
 const setGsap = () => {
-	gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-	const header = document.querySelector('.header');
-	const counters = document.querySelectorAll(".counter-animated");
+    const header = document.querySelector('.header');
+    const counters = document.querySelectorAll(".counter-animated");
 
-	ScrollTrigger.create({
-		trigger: ".cases__items",
-		start: "top top",
-		end: "bottom top",
-		onEnter: () => header.classList.add('header_hidden'),
-		onLeave: () => header.classList.remove('header_hidden'),
-		onEnterBack: () => header.classList.add('header_hidden'),
-		onLeaveBack: () => header.classList.remove('header_hidden')
-	});
+    ScrollTrigger.create({
+        trigger: ".cases__items",
+        start: "top top",
+        end: "bottom top",
+        onEnter: () => header.classList.add('header_hidden'),
+        onLeave: () => header.classList.remove('header_hidden'),
+        onEnterBack: () => header.classList.add('header_hidden'),
+        onLeaveBack: () => header.classList.remove('header_hidden')
+    });
 
-	// Оставил оптимизацию: ищем карточки только один раз
-	const cards = gsap.utils.toArray(".cases__item");
-	if (cards.length > 0) {
-		document.documentElement.style.setProperty('--cards-count', cards.length);
-	}
+    // Оставил оптимизацию: ищем карточки только один раз
+    const cards = gsap.utils.toArray(".cases__item");
+    if (cards.length > 0) {
+        document.documentElement.style.setProperty('--cards-count', cards.length);
+    }
 
-	cards.forEach((card, i) => {
-		ScrollTrigger.create({
-			trigger: card,
-			start: `top top+=${0 + (i * 50)}px`,
-			endTrigger: ".cases__items",
-			end: "bottom bottom",
-			pin: true,
-			pinSpacing: false,
-			onEnter: () => card.classList.add("cases__item_active"),
-			onLeaveBack: () => card.classList.remove("cases__item_active")
-		});
-	});
+    cards.forEach((card, i) => {
+        ScrollTrigger.create({
+            trigger: card,
+            start: `top top+=${0 + (i * 50)}px`,
+            endTrigger: ".cases__items",
+            end: "bottom bottom",
+            pin: true,
+            pinSpacing: false,
+            onEnter: () => card.classList.add("cases__item_active"),
+            onLeaveBack: () => card.classList.remove("cases__item_active")
+        });
+    });
 
-	counters.forEach((counter) => {
-		const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.textContent);
-		const val = { score: 0 };
+    counters.forEach((counter) => {
+        const target = parseInt(counter.getAttribute("data-target")) || parseInt(counter.textContent);
+        const val = { score: 0 };
 
-		gsap.to(val, {
-			score: target,
-			duration: 3,
-			ease: "power2.out",
-			scrollTrigger: {
-				trigger: counter,
-				start: "top 90%",
-				toggleActions: "play none none none"
-			},
-			onUpdate: () => {
-				counter.textContent = Math.floor(val.score);
-			}
-		});
-	});
+        gsap.to(val, {
+            score: target,
+            duration: 3,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: counter,
+                start: "top 90%",
+                toggleActions: "play none none none"
+            },
+            onUpdate: () => {
+                counter.textContent = Math.floor(val.score);
+            }
+        });
+    });
 
-	gsap.to(".promo__bg img", {
-		scrollTrigger: {
-			trigger: ".promo",
-			start: "bottom 100%",
-			end: "bottom 10%",
-			scrub: 1 // Вернул вашу единицу
-		},
-		scale: 1.5,
-		force3D: true, // Аппаратное ускорение для GPU
-		willChange: "transform"
-	});
+    gsap.to(".promo__bg img", {
+        scrollTrigger: {
+            trigger: ".promo",
+            start: "bottom 100%",
+            end: "bottom 10%",
+            scrub: 1 // Вернул вашу единицу
+        },
+        scale: 1.5,
+        force3D: true, // Аппаратное ускорение для GPU
+        willChange: "transform"
+    });
 
-	gsap.to(".company__photo_animated img", {
-		scrollTrigger: {
-			trigger: ".company__columns",
-			start: "top 65%",
-			end: "top 20%",
-			scrub: 1 // Вернул вашу единицу
-		},
-		aspectRatio: 10 / 16, // Оставил ваш изначальный вариант
-		force3D: true // Аппаратное ускорение
-	});
+    gsap.to(".company__photo_animated img", {
+        scrollTrigger: {
+            trigger: ".company__columns",
+            start: "top 65%",
+            end: "top 20%",
+            scrub: 1 // Вернул вашу единицу
+        },
+        aspectRatio: 10 / 16, // Оставил ваш изначальный вариант
+        force3D: true // Аппаратное ускорение
+    });
 }
 
 const setSmoothScroll = () => {
-	gsap.registerPlugin(ScrollSmoother);
+    // Не забудь зарегистрировать ScrollToPlugin, если решишь использовать его вне Smoother'а, 
+    // но для ScrollSmoother достаточно его самого и ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-	// Надежная проверка на мобильные устройства и планшеты
-	const isTouchDevice = window.matchMedia("(max-width: 1024px)").matches || ScrollTrigger.isTouch;
+    const isTouchDevice = window.matchMedia("(max-width: 1024px)").matches || ScrollTrigger.isTouch;
 
-	// Инициализируем ScrollSmoother ТОЛЬКО на десктопе
-	if (!isTouchDevice) {
-		ScrollSmoother.create({
-			wrapper: '.wrapper',
-			content: '.content',
-			smooth: 2,
-			effects: true,
-			normalizeScroll: false, // На ПК обычно работает отлично и без этого
-			smoothTouch: false
-		});
-	}
+    // Создаем переменную для хранения инстанса смузера
+    let smoother;
+
+    if (!isTouchDevice) {
+        smoother = ScrollSmoother.create({
+            wrapper: '.wrapper',
+            content: '.content',
+            smooth: 2,
+            effects: true,
+            normalizeScroll: false,
+            smoothTouch: false
+        });
+    }
+
+    // --- ЛОГИКА ДЛЯ ЯКОРНЫХ ССЫЛОК ---
+
+    // Находим все ссылки, которые начинаются с #, но исключаем пустые href="#" и модалки
+    const anchorLinks = document.querySelectorAll('a[href^="#"]:not([href="#"]):not([data-modal-open])');
+
+    anchorLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault(); // Обязательно отменяем стандартный резкий прыжок
+
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+                // Даем браузеру 50 миллисекунд, чтобы scrollController.enable() 
+                // из твоего setHeader успел полностью отработать и разблокировать страницу
+                setTimeout(() => {
+                    if (!isTouchDevice && smoother) {
+                        smoother.scrollTo(targetElement, true, "top top");
+                    } else {
+                        // Находим блок шапки (если он на странице один, можно искать так)
+                        const headerTop = document.querySelector('.header__top');
+                        // Получаем его высоту в пикселях. Если блока нет, отступ будет 0
+                        const headerOffset = headerTop ? headerTop.offsetHeight : 0;
+
+                        // Высчитываем точную позицию для скролла
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                        const offsetPosition = elementPosition - headerOffset;
+
+                        // Скроллим с помощью window.scrollTo
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 50);
+            }
+        });
+    });
 }
-
 const setAdvantagesSection = () => {
     const advantages = document.querySelector('.advantages');
     const titlesEl = document.querySelector('.advantages__titles');
@@ -338,7 +378,7 @@ const setAdvantagesSection = () => {
 
     // 1. Инициализация инстансов
     const swiperTitles = new Swiper('.advantages__titles', {
-        modules: [Controller], 
+        modules: [Controller],
         direction: 'vertical',
         slidesPerView: 'auto',
         spaceBetween: 20,
@@ -384,7 +424,7 @@ const setAdvantagesSection = () => {
             }
 
             // Прямая синхронизация Info -> Images для мобилки
-            swiperInfo.on('slideChange', function() {
+            swiperInfo.on('slideChange', function () {
                 swiperImages.slideTo(this.activeIndex);
             });
 
@@ -407,41 +447,41 @@ const setAdvantagesSection = () => {
 };
 
 const setStagesSection = () => {
-	const stages = document.querySelector('.stages');
-	if (!stages) return;
+    const stages = document.querySelector('.stages');
+    if (!stages) return;
 
-	const items = stages.querySelectorAll('.stages__accordeon');
+    const items = stages.querySelectorAll('.stages__accordeon');
 
-	items.forEach(item => {
-		item.addEventListener('click', (e) => {
-			items.forEach(item => {
-				item.classList.remove('active');
-			});
-			item.classList.add('active');
-		});
-	});
+    items.forEach(item => {
+        item.addEventListener('click', (e) => {
+            items.forEach(item => {
+                item.classList.remove('active');
+            });
+            item.classList.add('active');
+        });
+    });
 }
 
 const setFancybox = () => {
-	Fancybox.bind('[data-fancybox]', {
+    Fancybox.bind('[data-fancybox]', {
 
-		loop: true,
-		Images: {
-			zoom: true,
-		},
-	});
+        loop: true,
+        Images: {
+            zoom: true,
+        },
+    });
 }
 
 // Запуск функций
 document.addEventListener('DOMContentLoaded', () => {
-	setScrollbarWidth();
-	setHeader();
-	initFileLoaders();
-	setGsap();
-	setSmoothScroll();
-	setSwipers();
-	setAdvantagesSection();
-	setStagesSection();
-	setFancybox();
-	initModals();
+    setScrollbarWidth();
+    setHeader();
+    initFileLoaders();
+    setGsap();
+    setSmoothScroll();
+    setSwipers();
+    setAdvantagesSection();
+    setStagesSection();
+    setFancybox();
+    initModals();
 })
