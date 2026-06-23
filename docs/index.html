@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="css/style.css?v=1781828972563">
-    <link rel="stylesheet" href="css/swiper.css?v=1781828972563">
-    <link rel="stylesheet" href="css/fancybox.css?v=1781828972563">
+    <link rel="stylesheet" href="css/style.css?v=1782178324424">
+    <link rel="stylesheet" href="css/swiper.css?v=1782178324424">
+    <link rel="stylesheet" href="css/fancybox.css?v=1782178324424">
     <title></title>
 </head>
 <body id="home">
-<header class="header">
+<header class="header ">
     <div class="header__top">
         <div class="header__top-container container">
             <button type="button" class="header__burger"></button>
@@ -89,13 +89,13 @@
                         <p class="header__item-go">Перейти</p>
                         <ul class="header__item-list">
                             <li class="header__item-list-item">
-                                <a href="#">Апартаменты &#171;Пионерск&#187;</a>
+                                <a data-modal-open="case-modal-1" href="#">Апартаменты &#171;Пионерск&#187;</a>
                             </li>
                             <li class="header__item-list-item">
-                                <a href="#">Гостиница &#171;Зеленоградск&#187;</a>
+                                <a data-modal-open="case-modal-1" href="#">Гостиница &#171;Зеленоградск&#187;</a>
                             </li>
                             <li class="header__item-list-item">
-                                <a href="#">ЖК&#160;&#171;На&#160;Подлесной&#187;</a>
+                                <a data-modal-open="case-modal-1" href="#">ЖК&#160;&#171;На&#160;Подлесной&#187;</a>
                             </li>
                         </ul>
                     </div>
@@ -950,50 +950,123 @@
 </footer>
 
         </div>
+
         </div>
 
     </main>
 
-<div class="modal modal_callback" id="callback-modal">
-    <div class="modal__container">
-        <div class="modal__close"></div>
-        <div class="modal__content">
-            <h2 class="modal__title title">Оставьте заявку</h2>
-            <form action="#" class="form-callback form-callback_modal">
-                <div class="form-callback__labels">
-                    <label class="form-callback__label">
-                        <input placeholder="Название ИП" type="text" class="form-callback__input">
-                    </label>
-                    <label class="form-callback__label">
-                        <input placeholder="+7 (000) 000-00-00" type="text" class="form-callback__input">
-                    </label>
-                    <label class="form-callback__label">
-                        <input placeholder="E-mail" type="text" class="form-callback__input">
-                    </label>
-                    <label class="form-callback__label form-callback__file js-file-wrapper">
-                        <input type="file" class="js-file-input" accept=".pdf, .doc, .docx, .jpg, .jpeg, .png" hidden>
-                        <span class="js-file-name">Загрузить файл</span>
-                        <button type="button" class="form-callback__file-button js-file-btn">
-                            <img src="./img/icons/upload.svg" alt="">
-                        </button>
-                        <button type="button" class="form-callback__delete js-file-delete">
-                            <img src="./img/icons/close.svg" alt="">
-                        </button>
-                    </label>
-                    <label class="form-callback__label">
-                        <textarea placeholder="Краткое описание объекта" type="text" class="form-callback__input"></textarea>
-                    </label>
-                </div>
-                <button type="submit" class="form-callback__button button button_blue button_blue-stroke">
-                    <span>Отправить запрос</span>
-                </button>
-                <p class="form-callback__agree">
+    <div class="modal modal_callback" id="callback-modal">
+        <div class="modal__container">
+            <div class="modal__close"></div>
+            <div class="modal__content">
+                <h2 class="modal__title title">Оставьте заявку</h2>
+                <form action="#" class="form-callback form-callback_modal">
+                    <div class="form-callback__labels">
+                        <label class="form-callback__label">
+                            <input placeholder="Название ИП" type="text" class="form-callback__input">
+                        </label>
+                        <label class="form-callback__label">
+                            <input placeholder="+7 (000) 000-00-00" type="text" class="form-callback__input">
+                        </label>
+                        <label class="form-callback__label">
+                            <input placeholder="E-mail" type="text" class="form-callback__input">
+                        </label>
+                        <label class="form-callback__label form-callback__file js-file-wrapper">
+                            <input type="file" class="js-file-input" accept=".pdf, .doc, .docx, .jpg, .jpeg, .png" hidden>
+                            <span class="js-file-name">Загрузить файл</span>
+                            <button type="button" class="form-callback__file-button js-file-btn">
+                                <img src="./img/icons/upload.svg" alt="">
+                            </button>
+                            <button type="button" class="form-callback__delete js-file-delete">
+                                <img src="./img/icons/close.svg" alt="">
+                            </button>
+                        </label>
+                        <label class="form-callback__label">
+                            <textarea placeholder="Краткое описание объекта" type="text" class="form-callback__input"></textarea>
+                        </label>
+                    </div>
+                    <button type="submit" class="form-callback__button button button_blue button_blue-stroke">
+                        <span>Отправить запрос</span>
+                    </button>
+                    <p class="form-callback__agree">
                     Продолжая, вы&#160;даете свое согласие на&#160;<a href="#">обработку Ваших персональных данных</a> и&#160;принимаете условия <a href="#">Пользовательского соглашения.</a>
-                </p>
-            </form>
+                    </p>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+    <div class="modal modal_case" id="case-modal-1">
+        <div class="modal__container">
+            <div class="case case_modal">
+                <div class="case__container container">
+                    <div class="case__photo">
+                        <img loading="lazy" src="./img/case/1.webp" alt="">
+                        <div class="modal__close"></div>
+                    </div>
+                    <div class="case__bottom">
+                        <div class="case__about">
+                            <p class="case__desc">
+                                [Наши объекты]
+                            </p>
+                            <h1 class="case__title">
+                                АПАРТАМЕНТЫ
+                                &#171;ПИОНЕРСК&#187;
+                            </h1>
+                            <div class="case__rows">
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Объект:</h4>
+                                    <p class="case__row-text">Комплекс апартаментов</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Локация:</h4>
+                                    <p class="case__row-text">Калининградская область, г.&#160;Пионерск</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Материалы:</h4>
+                                    <p class="case__row-text">Керамогранит, композитные панели, подсистема вентфасада</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Работы:</h4>
+                                    <p class="case__row-text">Монтаж подсистемы, утепление, облицовка, откосы, доборные элементы</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Особенности:</h4>
+                                    <p class="case__row-text">Сложная геометрия фасада, сочетание нескольких материалов, работа в&#160;сжатые сроки</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Площадь, S2:</h4>
+                                    <p class="case__row-text">547&#160;м&#178;</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">год:</h4>
+                                    <p class="case__row-text">2025</p>
+                                </div>
+                            </div>
+                            <p class="case__text">
+                                Фасадные работы в&#160;апартаментах &#171;Пионерск&#187; выполнялись комплексно с&#160;соблюдением всех технологических норм и&#160;требований проектной документации. На&#160;начальном этапе специалисты провели тщательное обследование несущих стен: оценили их&#160;состояние, выявили и&#160;зафиксировали возможные дефекты&#160;&#8212; трещины, отслоения, высолы.
+                            </p>
+                            <div class="promo__button button button_blue button_blue-stroke">
+                                <span>уточнить детали</span>
+                            </div>
+                        </div>
+                        <div class="case__gallery">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/1.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/2.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/3.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/4.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/5.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/6.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/7.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/8.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/9.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/10.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/11.webp" alt="" class="case__gallery-item">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <svg class="sprite" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol viewBox="0 0 11 10" id="arrow-top-right" xmlns="http://www.w3.org/2000/svg"><mask maskUnits="userSpaceOnUse" x="0" y="0" width="11" height="10"><path d="M.6 9.4V.6h9.8v8.8H.6Z" stroke-width="1.2"/></mask><g mask="url(#a)"><mask><path d="m9.19.868.413-.363.742.774-.412.363L9.19.868ZM1.853 8.711l-.412.363L.698 8.3l.413-.363.742.774Z"/></mask><path d="m9.19.868-.793-.9-.94.828.867.903.866-.83Zm.413-.363.866-.83-.796-.83-.863.76.793.9Zm.742.774.793.9.94-.827-.867-.904-.866.831Zm-.412.363-.866.831.796.83.863-.76-.793-.9Zm-8.08 7.069.793.9.94-.828-.867-.903-.866.83Zm-.412.363-.866.83.796.83.863-.76-.793-.9ZM.698 8.3l-.793-.9-.94.827.867.904.866-.831Zm.413-.363.866-.831-.796-.83-.863.76.793.9ZM9.19.868l.792.901.413-.363-.793-.9-.793-.901-.413.363.793.9Zm.412-.363-.866.831.742.774.866-.831.866-.83-.742-.775-.866.831Zm.742.774-.793-.9L9.14.74l.793.901.793.9.412-.362-.793-.901Zm-.412.363.866-.83-.743-.774-.866.83-.866.831.743.774.866-.83Zm-8.08 7.069L1.06 7.81l-.412.363.793.9.793.901.412-.363-.793-.9Zm-.412.363.866-.831-.743-.774-.866.831-.866.83.743.775.866-.831ZM.698 8.3l.793.9.413-.362-.793-.901-.793-.9-.413.362.793.901Zm.413-.363-.866.83.742.774.866-.83.866-.831-.742-.774-.866.83Z" mask="url(#b)"/><path d="M9.57 1.247 1.474 8.332" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="round"/><mask><path d="M1.358 1.458h-.56V.405h.56v1.053Zm9.114 6.963v.537h-1.1V8.42h1.1Z"/></mask><path d="M1.358 1.458v1.2h1.2v-1.2h-1.2Zm-.56 0h-1.2v1.2h1.2v-1.2Zm0-1.053v-1.2h-1.2v1.2h1.2Zm.56 0h1.2v-1.2h-1.2v1.2Zm9.114 8.016h1.2v-1.2h-1.2v1.2Zm0 .537v1.2h1.2v-1.2h-1.2Zm-1.1 0h-1.2v1.2h1.2v-1.2Zm0-.537v-1.2h-1.2v1.2h1.2ZM1.358 1.458v-1.2h-.56v2.4h.56v-1.2Zm-.56 0h1.2V.405h-2.4v1.053h1.2Zm0-1.053v1.2h.56v-2.4h-.56v1.2Zm.56 0h-1.2v1.053h2.4V.405h-1.2Zm9.114 8.016h-1.2v.537h2.4V8.42h-1.2Zm0 .537v-1.2h-1.1v2.4h1.1v-1.2Zm-1.1 0h1.2V8.42h-2.4v.537h1.2Zm0-.537v1.2h1.1v-2.4h-1.1v1.2Z" mask="url(#c)"/><path d="M1.347.932h8.575v7.5" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="round"/></g></symbol></svg>
 <svg width="0" height="0">
@@ -1007,6 +1080,6 @@
             </mask>
         </defs>
     </svg>
-    <script src="js/common.js?v=1781828972563"></script>
+    <script src="js/common.js?v=1782178324424"></script>
 </body>
 </html>

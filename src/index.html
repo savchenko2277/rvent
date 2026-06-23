@@ -594,50 +594,123 @@
             @@include("_footer.html")
 
         </div>
+
         </div>
 
     </main>
 
-<div class="modal modal_callback" id="callback-modal">
-    <div class="modal__container">
-        <div class="modal__close"></div> 
-        <div class="modal__content">
-            <h2 class="modal__title title">Оставьте заявку</h2>
-            <form action="#" class="form-callback form-callback_modal">
-                <div class="form-callback__labels">
-                    <label class="form-callback__label">
-                        <input placeholder="Название ИП" type="text" class="form-callback__input">
-                    </label>
-                    <label class="form-callback__label">
-                        <input placeholder="+7 (000) 000-00-00" type="text" class="form-callback__input">
-                    </label>
-                    <label class="form-callback__label">
-                        <input placeholder="E-mail" type="text" class="form-callback__input">
-                    </label>
-                    <label class="form-callback__label form-callback__file js-file-wrapper">
-                        <input type="file" class="js-file-input" accept=".pdf, .doc, .docx, .jpg, .jpeg, .png" hidden>
-                        <span class="js-file-name">Загрузить файл</span>
-                        <button type="button" class="form-callback__file-button js-file-btn">
-                            <img src="./img/icons/upload.svg" alt="">
-                        </button>
-                        <button type="button" class="form-callback__delete js-file-delete">
-                            <img src="./img/icons/close.svg" alt="">
-                        </button>
-                    </label>
-                    <label class="form-callback__label">
-                        <textarea placeholder="Краткое описание объекта" type="text" class="form-callback__input"></textarea>
-                    </label>
-                </div>
-                <button type="submit" class="form-callback__button button button_blue button_blue-stroke">
-                    <span>Отправить запрос</span>
-                </button>
-                <p class="form-callback__agree">
+    <div class="modal modal_callback" id="callback-modal">
+        <div class="modal__container">
+            <div class="modal__close"></div>
+            <div class="modal__content">
+                <h2 class="modal__title title">Оставьте заявку</h2>
+                <form action="#" class="form-callback form-callback_modal">
+                    <div class="form-callback__labels">
+                        <label class="form-callback__label">
+                            <input placeholder="Название ИП" type="text" class="form-callback__input">
+                        </label>
+                        <label class="form-callback__label">
+                            <input placeholder="+7 (000) 000-00-00" type="text" class="form-callback__input">
+                        </label>
+                        <label class="form-callback__label">
+                            <input placeholder="E-mail" type="text" class="form-callback__input">
+                        </label>
+                        <label class="form-callback__label form-callback__file js-file-wrapper">
+                            <input type="file" class="js-file-input" accept=".pdf, .doc, .docx, .jpg, .jpeg, .png" hidden>
+                            <span class="js-file-name">Загрузить файл</span>
+                            <button type="button" class="form-callback__file-button js-file-btn">
+                                <img src="./img/icons/upload.svg" alt="">
+                            </button>
+                            <button type="button" class="form-callback__delete js-file-delete">
+                                <img src="./img/icons/close.svg" alt="">
+                            </button>
+                        </label>
+                        <label class="form-callback__label">
+                            <textarea placeholder="Краткое описание объекта" type="text" class="form-callback__input"></textarea>
+                        </label>
+                    </div>
+                    <button type="submit" class="form-callback__button button button_blue button_blue-stroke">
+                        <span>Отправить запрос</span>
+                    </button>
+                    <p class="form-callback__agree">
                     Продолжая, вы даете свое согласие на <a href="#">обработку Ваших персональных данных</a> и принимаете условия <a href="#">Пользовательского соглашения.</a>
-                </p>
-            </form>
+                    </p>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+    <div class="modal modal_case" id="case-modal-1">
+        <div class="modal__container">
+            <div class="case case_modal">
+                <div class="case__container container">
+                    <div class="case__photo">
+                        <img loading="lazy" src="./img/case/1.webp" alt="">
+                        <div class="modal__close"></div>
+                    </div>
+                    <div class="case__bottom">
+                        <div class="case__about">
+                            <p class="case__desc">
+                                [Наши объекты]
+                            </p>
+                            <h1 class="case__title">
+                                АПАРТАМЕНТЫ 
+                                «ПИОНЕРСК»
+                            </h1>
+                            <div class="case__rows">
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Объект:</h4>
+                                    <p class="case__row-text">Комплекс апартаментов</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Локация:</h4>
+                                    <p class="case__row-text">Калининградская область, г. Пионерск</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Материалы:</h4>
+                                    <p class="case__row-text">Керамогранит, композитные панели, подсистема вентфасада</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Работы:</h4>
+                                    <p class="case__row-text">Монтаж подсистемы, утепление, облицовка, откосы, доборные элементы</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Особенности:</h4>
+                                    <p class="case__row-text">Cложная геометрия фасада, сочетание нескольких материалов, работа в сжатые сроки</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">Площадь, S2:</h4>
+                                    <p class="case__row-text">547 м2</p>
+                                </div>
+                                <div class="case__row">
+                                    <h4 class="case__row-title">год:</h4>
+                                    <p class="case__row-text">2025</p>
+                                </div>
+                            </div>
+                            <p class="case__text">
+                                Фасадные работы в апартаментах «Пионерск» выполнялись комплексно с соблюдением всех технологических норм и требований проектной документации. На начальном этапе специалисты провели тщательное обследование несущих стен: оценили их состояние, выявили и зафиксировали возможные дефекты — трещины, отслоения, высолы.
+                            </p>
+                            <div class="promo__button button button_blue button_blue-stroke">
+                                <span>уточнить детали</span>
+                            </div>
+                        </div>
+                        <div class="case__gallery">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/1.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/2.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/3.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/4.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/5.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/6.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/7.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/8.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/9.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/10.webp" alt="" class="case__gallery-item">
+                            <img data-fancybox="case" loading="lazy" src="./img/case/11.webp" alt="" class="case__gallery-item">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @@include("_sprite.svg")
 <svg width="0" height="0">

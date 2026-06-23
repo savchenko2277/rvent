@@ -133,7 +133,9 @@ const setHeader = () => {
         if (window.scrollY > 5) {
             header.classList.add('header_light');
         } else {
-            header.classList.remove('header_light');
+            if(!header.classList.contains('header_static')) {
+                header.classList.remove('header_light');
+            }
         }
     };
 
@@ -239,15 +241,17 @@ const setGsap = () => {
     const header = document.querySelector('.header');
     const counters = document.querySelectorAll(".counter-animated");
 
-    ScrollTrigger.create({
-        trigger: ".cases__items",
-        start: "top top",
-        end: "bottom top",
-        onEnter: () => header.classList.add('header_hidden'),
-        onLeave: () => header.classList.remove('header_hidden'),
-        onEnterBack: () => header.classList.add('header_hidden'),
-        onLeaveBack: () => header.classList.remove('header_hidden')
-    });
+    if (!header.classList.contains("header_static")) {
+        ScrollTrigger.create({
+            trigger: ".cases__items",
+            start: "top top",
+            end: "bottom top",
+            onEnter: () => header.classList.add('header_hidden'),
+            onLeave: () => header.classList.remove('header_hidden'),
+            onEnterBack: () => header.classList.add('header_hidden'),
+            onLeaveBack: () => header.classList.remove('header_hidden')
+        });
+    }
 
     // Оставил оптимизацию: ищем карточки только один раз
     const cards = gsap.utils.toArray(".cases__item");
